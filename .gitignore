@@ -94,3 +94,7 @@ gradle-app.setting
 gradlew
 gradlew.bat
 gradle/wrapper
+
+
+#mics
+/classes/
