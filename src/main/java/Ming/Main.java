@@ -54,37 +54,12 @@ public class Main {
                         String source = targets[0];
                         String destinationPath = targets[1];
                         try {
-                            FFmpeg ffmpeg = new FFmpeg("ffmpeg");
-                            FFprobe ffprobe = new FFprobe("ffprobe");
-
-                            FFmpegBuilder builder = new FFmpegBuilder()
-
-                                    .setInput(source)     // Filename, or a FFmpegProbeResult
-                                    .overrideOutputFiles(true) // Override the output if it exists
-
-                                    .addOutput(destinationPath)   // Filename for the destination
-                                    .setFormat("mp3")        // Format is inferred from filename, or can be set
-//                                    .setTargetSize(250_000)  // Aim for a 250KB file
-//
-//                                    .disableSubtitle()       // No subtiles
-//
-//                                    .setAudioChannels(1)         // Mono audio
-//                                    .setAudioCodec("aac")        // using the aac codec
-//                                    .setAudioSampleRate(48_000)  // at 48KHz
-//                                    .setAudioBitRate(32768)      // at 32 kbit/s
-//
-//                                    .setVideoCodec("libx264")     // Video using x264
-//                                    .setVideoFrameRate(24, 1)     // at 24 frames per second
-//                                    .setVideoResolution(640, 480) // at 640x480 resolution
-//
-//                                    .setStrict(FFmpegBuilder.Strict.EXPERIMENTAL) // Allow FFmpeg to use experimental specs
-                                    .done();
-
-                            FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);
-
-                            // Run a one-pass encode
-                            executor.createJob(builder).run();
-
+                            AudioExtractor extractor = new AudioExtractor(source);
+                            long offset = 33 * 60 * 1000 + 676;
+                            long duration = 21 * 1000 + 133;
+                            File output = new File(extractor.extract(offset, duration));
+                            File dest = new File(destinationPath);
+                            output.renameTo(dest);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
