@@ -1,6 +1,7 @@
 package Ming;
 
 import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.model.RecognizeOptions;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechResults;
 import com.ibm.watson.developer_cloud.speech_to_text.v1.model.Transcript;
 
@@ -18,7 +19,9 @@ public class SpeechToTextService {
             return null;
         }
         service.setUsernameAndPassword(username, password);
-        SpeechResults results = service.recognize(audio).execute();
+        SpeechResults results = service.recognize(audio, new RecognizeOptions.Builder()
+                .continuous(true)
+                .build()).execute();
         List<Transcript> result = results.getResults();
         StringBuilder builder = new StringBuilder();
         for (int j = 0; j < result.size(); j++) {
