@@ -1,14 +1,9 @@
 package Ming;
 
-import net.bramp.ffmpeg.FFmpeg;
-import net.bramp.ffmpeg.FFmpegExecutor;
-import net.bramp.ffmpeg.FFprobe;
-import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import org.apache.commons.cli.*;
 
 import java.io.File;
 import java.io.IOException;
-
 
 public class Main {
     public static void main(String[] args) {
