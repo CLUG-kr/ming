@@ -11,7 +11,13 @@ import java.util.List;
 public class SpeechToTextService {
     public String recognize(File audio) {
         SpeechToText service = new SpeechToText();
-        service.setUsernameAndPassword("", "");
+        String username = System.getenv("SPEECH_TO_TEXT_BLUEMIX_USERNAME");
+        String password = System.getenv("SPEECH_TO_TEXT_BLUEMIX_PASSWORD");
+        if (username == null || password == null) {
+            System.err.println("ERROR: BLUEMIX credentials for speech to text is not set.");
+            return null;
+        }
+        service.setUsernameAndPassword(username, password);
         SpeechResults results = service.recognize(audio).execute();
         List<Transcript> result = results.getResults();
         StringBuilder builder = new StringBuilder();
