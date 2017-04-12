@@ -39,9 +39,9 @@ public class Main {
                 return;
             }
             if (cmd.hasOption("test")) {
+                String[] targets = cmd.getArgs();
                 switch (cmd.getOptionValue("test")) {
                     case "extract_sound": {
-                        String[] targets = cmd.getArgs();
                         if (targets.length < 2) {
                             System.out.println("you must provide [src_video_file] [dst_audio_file_path]");
                             return;
@@ -61,7 +61,6 @@ public class Main {
                     }
                     break;
                     case "read_srt":
-                        String[] targets = cmd.getArgs();
                         if (targets.length < 1) {
                             System.out.println("you must provide [srt_file]");
                             break;
@@ -75,11 +74,26 @@ public class Main {
                             System.out.println(item.startTimestamp);
                             System.out.println(item.endTimestamp);
                             System.out.println("_" + item.text + "_");
+
                         } catch (java.text.ParseException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        break;
+                    case "senario1":
+                        if (targets.length < 3) {
+                            System.out.println("you must provide [video_file] [srt_file] [current_playback_position]");
+                            break;
+                        }
+                        String videoFilepath = targets[0];
+                        String srtFilepath = targets[1];
+                        long playback_position = Integer.parseInt(targets[2]);
+                        // TODO:
+                        // 1. Find subtitle items by current playback
+                        // 2. Extract audio
+                        // 3. Send the audio to the speech to text service.
+                        // 4. Compare the text and subtitle contents.
                         break;
                     default:
                         throw new UnsupportedOperationException("commons-cli 에 테스트 시나리오가 연결 되지 않음!");
