@@ -60,6 +60,27 @@ public class Main {
                         }
                     }
                     break;
+                    case "read_srt":
+                        String[] targets = cmd.getArgs();
+                        if (targets.length < 1) {
+                            System.out.println("you must provide [srt_file]");
+                            break;
+                        }
+                        SRTReader srtReader = new SRTReader();
+                        try {
+                            System.out.println(targets[0]);
+                            Subtitle st = srtReader.read(new File(targets[0]));
+                            System.out.println(st.items.size());
+                            Subtitle.Item item = st.items.get(2411);
+                            System.out.println(item.startTimestamp);
+                            System.out.println(item.endTimestamp);
+                            System.out.println("_" + item.text + "_");
+                        } catch (java.text.ParseException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        break;
                     default:
                         throw new UnsupportedOperationException("commons-cli 에 테스트 시나리오가 연결 되지 않음!");
                 }
