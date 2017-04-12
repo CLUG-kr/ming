@@ -89,11 +89,32 @@ public class Main {
                         String videoFilepath = targets[0];
                         String srtFilepath = targets[1];
                         long playback_position = Integer.parseInt(targets[2]);
-                        // TODO:
-                        // 1. Find subtitle items by current playback
-                        // 2. Extract audio
-                        // 3. Send the audio to the speech to text service.
-                        // 4. Compare the text and subtitle contents.
+                        try {
+                            System.out.println("Find subtitle");
+                            Subtitle subs = new SRTReader().read(new File(srtFilepath));
+                            int position = -1;
+                            for (int i=0; i<subs.items.size(); i++) {
+                                if (subs.items.get(i).startTimestamp > playback_position) {
+                                    position = i;
+                                    break;
+                                }
+                            }
+                            if (position < 0) {
+                                System.out.println("Unavailable playback position: " + playback_position);
+                                return;
+                            }
+                            System.out.println("Extract Audio");
+                            AudioExtractor extractor_ = new AudioExtractor(videoFilepath);
+                            File output = new File(extractor_.extract(subs.items.get(position).startTimestamp, subs.items.get(position).endTimestamp - subs.items.get(position).startTimestamp));
+                            System.out.println("Speech To Text: " + output.getAbsolutePath());
+                            SpeechToTextService service = new SpeechToTextService();
+                            String result = service.recognize(output);
+                            System.out.println(result);
+                            // TODO:
+                            // 4. Compare the text and subtitle contents.
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     default:
                         throw new UnsupportedOperationException("commons-cli 에 테스트 시나리오가 연결 되지 않음!");
