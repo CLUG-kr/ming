@@ -21,4 +21,10 @@ dependencies {
     compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
 }
 
+run {
+    if (project.hasProperty("appArgs")) {
+        args Eval.me(appArgs)
+    }
+}
+
 mainClassName = 'Ming.Main'
