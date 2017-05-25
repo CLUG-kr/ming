@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class AudioExtractor {
-    private final String outputAudioFormat = "wav";
+    private final String outputAudioFormat = "ogg";
     private FFmpegExecutor m_executor;
     private String m_inputFilepath;
     AudioExtractor() throws IOException{
@@ -30,9 +30,9 @@ public class AudioExtractor {
                 .setInput(m_inputFilepath)
                 .overrideOutputFiles(true)
                 .addOutput(output)
+                .disableVideo()
                 .setFormat(outputAudioFormat)
-                .setStartOffset(startOffset, TimeUnit.MILLISECONDS)
-                .setDuration(duration, TimeUnit.MILLISECONDS)
+                .setAudioSampleRate(16000)
                 .done()
         ).run();
 
