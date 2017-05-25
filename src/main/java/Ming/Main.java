@@ -60,6 +60,16 @@ public class Main {
                         }
                     }
                     break;
+                    case "speech_to_text": {
+                        if (targets.length < 1) {
+                            System.out.println("you must provide [audio_file]");
+                            return;
+                        }
+                        SpeechToTextService service = new SpeechToTextService();
+                        String result = service.recognize(new File(targets[0]));
+                        System.out.println(result);
+                    }
+                    break;
                     case "read_srt":
                         if (targets.length < 1) {
                             System.out.println("you must provide [srt_file]");
