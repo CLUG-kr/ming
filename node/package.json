@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/CLUG-kr/ming#readme",
   "dependencies": {
-    "commander": "^2.10.0"
+    "commander": "^2.10.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "tempfile": "^2.0.0"
   }
 }

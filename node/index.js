@@ -1,4 +1,6 @@
 let program = require('commander');
+let ffmpeg = require('fluent-ffmpeg');
+let tempfile = require('tempfile');
 
 program.version('0.0.1');
 
@@ -7,7 +9,15 @@ program
   .description('extract audio from video using ffmpeg')
   .option('-o, --output-file [Audio File]', 'Save a audio file to given path')
   .action((videoFilepath, options) => {
-    return console.error('Not implemented', videoFilepath, options.outputFile);
+    if (!videoFilepath) return console.error('The video file is missing');
+    let outputFilepath = options.outputFile || tempfile('.ogg');
+    extractAudio(videoFilepath, outputFilepath)
+      .then((audioFilepath) => {
+        console.log('Extracing audio is done:', audioFilepath);
+      })
+      .catch((err) => {
+        console.error('Error while extracting audio:', err);
+      });
   });
 
 program
@@ -37,4 +47,24 @@ if (process.argv.slice(2).length) {
   program.parse(process.argv);
 } else {
   program.outputHelp();
+}
+
+function extractAudio (videoFilepath, outputFilepath) {
+  return new Promise((resolve, reject) => {
+    ffmpeg(videoFilepath)
+      .output(outputFilepath)
+      .noVideo()
+      .audioCodec('libvorbis') // ogg
+      .audioFrequency(16000) // IBM Watson preferred settings.
+      .on('start', () => {
+        console.log('Extracting audio started');
+      })
+      .on('error', (err) => {
+        reject(err);
+      })
+      .on('end', () => {
+        resolve(outputFilepath);
+      })
+      .run();
+  });
 }
