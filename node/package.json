@@ -19,6 +19,7 @@
   "dependencies": {
     "commander": "^2.10.0",
     "fluent-ffmpeg": "^2.1.2",
-    "tempfile": "^2.0.0"
+    "tempfile": "^2.0.0",
+    "watson-developer-cloud": "^2.32.1"
   }
 }

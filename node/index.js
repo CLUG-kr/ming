@@ -1,6 +1,8 @@
 let program = require('commander');
 let ffmpeg = require('fluent-ffmpeg');
 let tempfile = require('tempfile');
+let SpeechToTextV1 = require('watson-developer-cloud/speech-to-text/v1');
+let fs = require('fs');
 
 program.version('0.0.1');
 
@@ -25,7 +27,13 @@ program
   .description('Convert audio to text using IBM Watson Speech-to-text API')
   .option('-o, --output-file [Recognition Result File]', 'Save a dump of recognition result to given path')
   .action((audioFilepath, options) => {
-    return console.error('Not implemented');
+    recognize(audioFilepath)
+      .then((outputFilepath) => {
+        console.log('recognize done:', outputFilepath);
+      })
+      .catch((err) => {
+        console.error('Error while recognizing audio:', err);
+      });
   });
 
 program
@@ -66,5 +74,28 @@ function extractAudio (videoFilepath, outputFilepath) {
         resolve(outputFilepath);
       })
       .run();
+  });
+}
+
+function recognize (audioFilepath) {
+  return new Promise((resolve, reject) => {
+    let service = new SpeechToTextV1({
+      username: process.env.SERVICE_NAME_USERNAME,
+      password: process.env.SERVICE_NAME_PASSWORD
+    });
+    const params = {
+      audio: fs.createReadStream(audioFilepath),
+      content_type: 'audio/ogg; rate=16000',
+      inactivity_timeout: -1,
+      timestamps: true
+    };
+    service.recognize(params, (err, res) => {
+      if (err) return reject(err);
+      let out = tempfile();
+      fs.writeFile(out, JSON.stringify(res), (err) => {
+        if (err) return reject(err);
+        resolve(out);
+      });
+    });
   });
 }
