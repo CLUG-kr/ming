@@ -3,6 +3,9 @@ let ffmpeg = require('fluent-ffmpeg');
 let tempfile = require('tempfile');
 let SpeechToTextV1 = require('watson-developer-cloud/speech-to-text/v1');
 let fs = require('fs');
+let subtitlesParser = require('subtitles-parser');
+
+let combiner = require('./combiner');
 
 program.version('0.0.1');
 
@@ -41,7 +44,19 @@ program
   .description('Generate fixed subtitle using recognized text and wrong subtitle')
   .option('-o, --output-file [New Subtitle File]', 'Save a new subtitle to given path')
   .action((subtitleFilepath, recognitionFilepath) => {
-    return console.error('Not implemented');
+    if (!subtitleFilepath) return console.error('The subtitle file must be given');
+    if (!recognitionFilepath) return console.error('The recognition result file must be given');
+
+    const subtitle = subtitlesParser.fromSrt(fs.readFileSync(subtitleFilepath, 'utf-8'));
+    const recognitionResult = JSON.parse(fs.readFileSync(recognitionFilepath, 'utf-8'));
+
+    combiner.combine(subtitle, recognitionResult)
+      .then((newSubtitleText) => {
+        console.log('Combining is done: ', newSubtitleText);
+      })
+      .catch((err) => {
+        console.error('Error while combining subtitle and recognition result:', err);
+      });
   });
 
 
