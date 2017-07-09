@@ -10,9 +10,9 @@ let combiner = require('./combiner');
 program.version('0.0.1');
 
 program
-  .command('extract-audio [Video File]')
-  .description('extract audio from video using ffmpeg')
-  .option('-o, --output-file [Audio File]', 'Save a audio file to given path')
+  .command('extract-audio [video]')
+  .description('Extract audio from video using ffmpeg')
+  .option('-o, --output-file [filepath]', 'Save a audio file to given path')
   .action((videoFilepath, options) => {
     if (!videoFilepath) return console.error('The video file is missing');
     let outputFilepath = options.outputFile || tempfile('.ogg');
@@ -26,9 +26,9 @@ program
   });
 
 program
-  .command('recognize [Audio file]')
+  .command('recognize [audio]')
   .description('Convert audio to text using IBM Watson Speech-to-text API')
-  .option('-o, --output-file [Recognition Result File]', 'Save a dump of recognition result to given path')
+  .option('-o, --output-file [filepath]', 'Save a dump of recognition result to given path')
   .action((audioFilepath, options) => {
     recognize(audioFilepath)
       .then((outputFilepath) => {
@@ -40,9 +40,9 @@ program
   });
 
 program
-  .command('combine [Subtitle File] [Recognition Result]')
-  .description('Generate fixed subtitle using recognized text and wrong subtitle')
-  .option('-o, --output-file [New Subtitle File]', 'Save a new subtitle to given path')
+  .command('combine [subtitle] [recognition_result]')
+  .description('Generate fixed subtitle using recognition result and misaligned subtitle')
+  .option('-o, --output-file [filepath]', 'Save a new subtitle to given path')
   .action((subtitleFilepath, recognitionFilepath) => {
     if (!subtitleFilepath) return console.error('The subtitle file must be given');
     if (!recognitionFilepath) return console.error('The recognition result file must be given');
