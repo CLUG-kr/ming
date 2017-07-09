@@ -1,0 +1,1840 @@
+﻿1
+00:00:13,280 --> 00:00:15,455
+Chris Anderson: This is such a strange thing.
+
+2
+00:00:15,479 --> 00:00:18,637
+Your software, Linux, is in millions of computers,
+
+3
+00:00:18,661 --> 00:00:22,208
+it probably powers much of the Internet.
+
+4
+00:00:22,232 --> 00:00:23,995
+And I think that there are, like,
+
+5
+00:00:24,019 --> 00:00:27,364
+a billion and a half active Android devices out there.
+
+6
+00:00:27,388 --> 00:00:29,989
+Your software is in every single one of them.
+
+7
+00:00:30,628 --> 00:00:31,778
+It's kind of amazing.
+
+8
+00:00:31,802 --> 00:00:36,837
+You must have some amazing software headquarters driving all this.
+
+9
+00:00:36,861 --> 00:00:40,167
+That's what I thought -- and I was shocked when I saw a picture of it.
+
+10
+00:00:40,191 --> 00:00:41,391
+I mean, this is --
+
+11
+00:00:41,415 --> 00:00:43,665
+this is the Linux world headquarters.
+
+12
+00:00:43,689 --> 00:00:45,679
+(Laughter)
+
+13
+00:00:45,703 --> 00:00:49,709
+(Applause)
+
+14
+00:00:49,733 --> 00:00:52,019
+Linus Torvalds: It really doesn't look like much.
+
+15
+00:00:52,043 --> 00:00:53,719
+And I have to say,
+
+16
+00:00:53,743 --> 00:00:57,563
+the most interesting part in this picture,
+
+17
+00:00:57,587 --> 00:00:59,290
+that people mostly react to,
+
+18
+00:00:59,314 --> 00:01:00,757
+is the walking desk.
+
+19
+00:01:00,781 --> 00:01:03,480
+It is the most interesting part in my office
+
+20
+00:01:03,504 --> 00:01:05,464
+and I'm not actually using it anymore.
+
+21
+00:01:05,488 --> 00:01:07,780
+And I think the two things are related.
+
+22
+00:01:09,026 --> 00:01:11,351
+The way I work is ...
+
+23
+00:01:13,065 --> 00:01:17,414
+I want to not have external stimulation.
+
+24
+00:01:17,990 --> 00:01:23,257
+You can kind of see, on the walls are this light green.
+
+25
+00:01:23,281 --> 00:01:27,745
+I'm told that at mental institutions they use that on the walls.
+
+26
+00:01:27,769 --> 00:01:28,816
+(Laughter)
+
+27
+00:01:28,840 --> 00:01:30,625
+It's like a calming color,
+
+28
+00:01:30,649 --> 00:01:33,766
+it's not something that really stimulates you.
+
+29
+00:01:34,884 --> 00:01:39,309
+What you can't see is the computer here, you only see the screen,
+
+30
+00:01:39,333 --> 00:01:42,714
+but the main thing I worry about in my computer is --
+
+31
+00:01:42,738 --> 00:01:46,073
+it doesn't have to be big and powerful, although I like that --
+
+32
+00:01:46,097 --> 00:01:48,929
+it really has to be completely silent.
+
+33
+00:01:49,795 --> 00:01:51,806
+I know people who work for Google
+
+34
+00:01:51,830 --> 00:01:55,037
+and they have their own small data center at home,
+
+35
+00:01:55,061 --> 00:01:56,213
+and I don't do that.
+
+36
+00:01:56,237 --> 00:01:59,942
+My office is the most boring office you'll ever see.
+
+37
+00:01:59,966 --> 00:02:03,480
+And I sit there alone in the quiet.
+
+38
+00:02:03,956 --> 00:02:05,993
+If the cat comes up,
+
+39
+00:02:06,017 --> 00:02:07,854
+it sits in my lap.
+
+40
+00:02:07,878 --> 00:02:10,068
+And I want to hear the cat purring,
+
+41
+00:02:10,092 --> 00:02:13,266
+not the sound of the fans in the computer.
+
+42
+00:02:13,290 --> 00:02:14,599
+CA: So this is astonishing,
+
+43
+00:02:14,623 --> 00:02:17,301
+because working this way,
+
+44
+00:02:17,325 --> 00:02:20,313
+you're able to run this vast technology empire --
+
+45
+00:02:20,337 --> 00:02:21,558
+it is an empire --
+
+46
+00:02:21,582 --> 00:02:25,282
+so that's an amazing testament to the power of open source.
+
+47
+00:02:25,306 --> 00:02:29,482
+Tell us how you got to understand open source
+
+48
+00:02:29,506 --> 00:02:31,758
+and how it lead to the development of Linux.
+
+49
+00:02:33,366 --> 00:02:34,871
+LT: I mean, I still work alone.
+
+50
+00:02:34,895 --> 00:02:38,462
+Really -- I work alone in my house,
+
+51
+00:02:38,486 --> 00:02:39,876
+often in my bathrobe.
+
+52
+00:02:39,900 --> 00:02:42,461
+When a photographer shows up, I dress up,
+
+53
+00:02:42,485 --> 00:02:43,771
+so I have clothes on.
+
+54
+00:02:43,795 --> 00:02:45,032
+(Laughter)
+
+55
+00:02:45,056 --> 00:02:47,128
+And that's how I've always worked.
+
+56
+00:02:47,152 --> 00:02:49,160
+I mean, this was how I started Linux, too.
+
+57
+00:02:49,184 --> 00:02:52,833
+I did not start Linux as a collaborative project.
+
+58
+00:02:52,857 --> 00:02:57,735
+I started it as one in a series of many projects
+
+59
+00:02:57,759 --> 00:03:01,716
+I had done at the time for myself,
+
+60
+00:03:01,740 --> 00:03:03,642
+partly because I needed the end result,
+
+61
+00:03:03,666 --> 00:03:05,968
+but even more because I just enjoyed programming.
+
+62
+00:03:05,992 --> 00:03:10,366
+So it was about the end of the journey,
+
+63
+00:03:10,390 --> 00:03:13,736
+which, 25 years later, we still have not reached.
+
+64
+00:03:13,760 --> 00:03:17,477
+But it was really about the fact that I was looking for a project on my own
+
+65
+00:03:17,501 --> 00:03:21,330
+and there was no open source, really, on my radar at all.
+
+66
+00:03:21,808 --> 00:03:23,820
+And what happened is ...
+
+67
+00:03:24,488 --> 00:03:29,040
+the project grows and becomes something you want to show off to people.
+
+68
+00:03:30,372 --> 00:03:34,489
+Really, this is more of a, "Wow, look at what I did!"
+
+69
+00:03:34,513 --> 00:03:37,068
+And trust me -- it was not that great back then.
+
+70
+00:03:37,948 --> 00:03:39,822
+I made it publicly available,
+
+71
+00:03:39,846 --> 00:03:41,952
+and it wasn't even open source at that point.
+
+72
+00:03:41,976 --> 00:03:47,145
+At that point it was source that was open, but there was no intention
+
+73
+00:03:47,169 --> 00:03:52,283
+behind using the kind of open-source methodology that we think of today
+
+74
+00:03:52,307 --> 00:03:53,458
+to improve it.
+
+75
+00:03:53,482 --> 00:03:54,633
+It was more like,
+
+76
+00:03:54,657 --> 00:03:57,594
+"Look, I've been working on this for half a year,
+
+77
+00:03:58,279 --> 00:04:00,018
+I'd love to have comments."
+
+78
+00:04:00,537 --> 00:04:02,537
+And other people approached me.
+
+79
+00:04:03,037 --> 00:04:04,689
+At the University of Helsinki,
+
+80
+00:04:04,713 --> 00:04:08,428
+I had a friend who was one of the open source --
+
+81
+00:04:08,452 --> 00:04:12,108
+it was called mainly "free software" back then --
+
+82
+00:04:12,132 --> 00:04:16,406
+and he actually introduced me to the notion that, hey,
+
+83
+00:04:16,430 --> 00:04:21,787
+you can use these open-source licenses that had been around.
+
+84
+00:04:23,934 --> 00:04:25,975
+And I thought about it for a while.
+
+85
+00:04:25,999 --> 00:04:29,490
+I was actually worried about the whole commercial interests coming in.
+
+86
+00:04:29,514 --> 00:04:33,988
+I mean, that's one of the worries I think most people who start out have,
+
+87
+00:04:34,012 --> 00:04:38,972
+is that they worry about somebody taking advantage of their work, right?
+
+88
+00:04:39,423 --> 00:04:42,679
+And I decided, "What the hell?"
+
+89
+00:04:43,560 --> 00:04:44,710
+And --
+
+90
+00:04:44,734 --> 00:04:46,029
+CA: And then at some point,
+
+91
+00:04:46,053 --> 00:04:48,513
+someone contributed some code that you thought,
+
+92
+00:04:48,537 --> 00:04:51,708
+"Wow, that really is interesting, I would not have thought of that.
+
+93
+00:04:51,732 --> 00:04:53,383
+This could actually improve this."
+
+94
+00:04:53,407 --> 00:04:55,932
+LT: It didn't even start by people contributing code,
+
+95
+00:04:55,956 --> 00:04:58,935
+it was more that people started contributing ideas.
+
+96
+00:04:59,568 --> 00:05:02,814
+And just the fact that somebody else takes a look at your project --
+
+97
+00:05:02,838 --> 00:05:05,386
+and I'm sure it's true of other things, too,
+
+98
+00:05:05,410 --> 00:05:07,247
+but it's definitely true in code --
+
+99
+00:05:07,271 --> 00:05:10,770
+is that somebody else takes an interest in your code,
+
+100
+00:05:10,794 --> 00:05:13,316
+looks at it enough to actually give you feedback
+
+101
+00:05:13,340 --> 00:05:15,229
+and give you ideas.
+
+102
+00:05:15,253 --> 00:05:16,954
+That was a huge thing for me.
+
+103
+00:05:16,978 --> 00:05:20,170
+I was 21 at the time, so I was young,
+
+104
+00:05:20,194 --> 00:05:23,431
+but I had already programmed for half my life, basically.
+
+105
+00:05:24,192 --> 00:05:28,164
+And every project before that had been completely personal
+
+106
+00:05:28,188 --> 00:05:31,295
+and it was a revelation when people just started commenting,
+
+107
+00:05:31,319 --> 00:05:34,620
+started giving feedback on your code.
+
+108
+00:05:34,644 --> 00:05:38,416
+And even before they started giving code back,
+
+109
+00:05:38,440 --> 00:05:41,181
+that was, I think, one of the big moments where I said,
+
+110
+00:05:41,205 --> 00:05:43,078
+"I love other people!"
+
+111
+00:05:43,102 --> 00:05:44,259
+Don't get me wrong --
+
+112
+00:05:44,283 --> 00:05:45,907
+I'm actually not a people person.
+
+113
+00:05:45,931 --> 00:05:49,296
+(Laughter)
+
+114
+00:05:49,320 --> 00:05:51,872
+I don't really love other people --
+
+115
+00:05:51,896 --> 00:05:52,916
+(Laughter)
+
+116
+00:05:52,940 --> 00:05:54,566
+But I love computers,
+
+117
+00:05:54,590 --> 00:05:56,805
+I love interacting with other people on email,
+
+118
+00:05:56,829 --> 00:06:00,161
+because it kind of gives you that buffer.
+
+119
+00:06:00,185 --> 00:06:06,686
+But I do love other people who comment and get involved in my project.
+
+120
+00:06:06,710 --> 00:06:08,363
+And it made it so much more.
+
+121
+00:06:09,093 --> 00:06:11,927
+CA: So was there a moment when you saw what was being built
+
+122
+00:06:11,951 --> 00:06:14,158
+and it suddenly started taking off,
+
+123
+00:06:14,182 --> 00:06:17,472
+and you thought, "Wait a sec, this actually could be something huge,
+
+124
+00:06:17,496 --> 00:06:20,408
+not just a personal project that I'm getting nice feedback on,
+
+125
+00:06:20,432 --> 00:06:24,752
+but a kind of explosive development in the whole technology world"?
+
+126
+00:06:25,641 --> 00:06:26,800
+LT: Not really.
+
+127
+00:06:26,824 --> 00:06:30,396
+I mean, the big point for me, really, was not when it was becoming huge,
+
+128
+00:06:30,420 --> 00:06:32,554
+it was when it was becoming little.
+
+129
+00:06:33,529 --> 00:06:37,046
+The big point for me was not being alone
+
+130
+00:06:37,070 --> 00:06:40,787
+and having 10, maybe 100 people being involved --
+
+131
+00:06:40,811 --> 00:06:42,290
+that was a big point.
+
+132
+00:06:42,314 --> 00:06:45,353
+Then everything else was very gradual.
+
+133
+00:06:45,377 --> 00:06:49,636
+Going from 100 people to a million people is not a big deal -- to me.
+
+134
+00:06:49,660 --> 00:06:51,493
+Well, I mean, maybe it is if you're --
+
+135
+00:06:51,517 --> 00:06:52,518
+(Laughter)
+
+136
+00:06:52,542 --> 00:06:55,260
+If you want to sell your result then it's a huge deal --
+
+137
+00:06:55,284 --> 00:06:56,435
+don't get me wrong.
+
+138
+00:06:56,459 --> 00:06:58,586
+But if you're interested in the technology
+
+139
+00:06:58,610 --> 00:07:00,465
+and you're interested in the project,
+
+140
+00:07:00,489 --> 00:07:02,370
+the big part was getting the community.
+
+141
+00:07:02,394 --> 00:07:04,018
+Then the community grew gradually.
+
+142
+00:07:04,042 --> 00:07:07,390
+And there's actually not a single point where I went like,
+
+143
+00:07:07,986 --> 00:07:10,162
+"Wow, that just took off!" because it --
+
+144
+00:07:10,186 --> 00:07:13,510
+I mean -- it took a long time, relatively.
+
+145
+00:07:13,534 --> 00:07:16,510
+CA: So all the technologists that I talk to really credit you
+
+146
+00:07:16,534 --> 00:07:19,408
+with massively changing their work.
+
+147
+00:07:19,432 --> 00:07:21,055
+And it's not just Linux,
+
+148
+00:07:21,079 --> 00:07:22,525
+it's this thing called Git,
+
+149
+00:07:22,549 --> 00:07:26,561
+which is this management system for software development.
+
+150
+00:07:26,585 --> 00:07:29,370
+Tell us briefly about that and your role in that.
+
+151
+00:07:30,301 --> 00:07:32,090
+LT: So one of the issues we had,
+
+152
+00:07:32,114 --> 00:07:35,166
+and this took a while to start to appear,
+
+153
+00:07:35,190 --> 00:07:36,345
+is when you ...
+
+154
+00:07:37,528 --> 00:07:42,860
+When you grow from having 10 people or 100 people working on a project
+
+155
+00:07:42,884 --> 00:07:45,272
+to having 10,000 people, which --
+
+156
+00:07:45,296 --> 00:07:48,762
+I mean, right now we're in the situation where just on the kernel,
+
+157
+00:07:48,786 --> 00:07:51,960
+we have 1,000 people involved in every single release
+
+158
+00:07:51,984 --> 00:07:55,570
+and that's every two months, roughly two or three months.
+
+159
+00:07:56,156 --> 00:07:58,577
+Some of those people don't do a lot.
+
+160
+00:07:58,601 --> 00:08:01,184
+There's a lot of people who make small, small changes.
+
+161
+00:08:01,208 --> 00:08:03,454
+But to maintain this,
+
+162
+00:08:03,478 --> 00:08:06,367
+the scale changes how you have to maintain it.
+
+163
+00:08:06,391 --> 00:08:08,789
+And we went through a lot of pain.
+
+164
+00:08:10,533 --> 00:08:17,062
+And there are whole projects that do only source-code maintenance.
+
+165
+00:08:17,086 --> 00:08:20,378
+CVS is the one that used to be the most commonly used,
+
+166
+00:08:20,402 --> 00:08:24,299
+and I hated CVS with a passion and refused to touch it
+
+167
+00:08:24,323 --> 00:08:27,386
+and tried something else that was radical and interesting
+
+168
+00:08:27,410 --> 00:08:30,066
+and everybody else hated.
+
+169
+00:08:30,824 --> 00:08:32,198
+CA: (Laughs)
+
+170
+00:08:32,222 --> 00:08:34,310
+LT: And we were in this bad spot,
+
+171
+00:08:34,334 --> 00:08:37,151
+where we had thousands of people who wanted to participate,
+
+172
+00:08:37,175 --> 00:08:42,216
+but in many ways, I was the kind of break point,
+
+173
+00:08:42,240 --> 00:08:44,764
+where I could not scale to the point
+
+174
+00:08:44,788 --> 00:08:47,588
+where I could work with thousands of people.
+
+175
+00:08:47,612 --> 00:08:50,064
+So Git is my second big project,
+
+176
+00:08:50,088 --> 00:08:54,626
+which was only created for me to maintain my first big project.
+
+177
+00:08:55,253 --> 00:08:57,500
+And this is literally how I work.
+
+178
+00:08:57,524 --> 00:09:00,029
+I don't code for --
+
+179
+00:09:00,053 --> 00:09:01,775
+well, I do code for fun --
+
+180
+00:09:01,799 --> 00:09:04,180
+but I want to code for something meaningful
+
+181
+00:09:04,204 --> 00:09:08,251
+so every single project I've ever done has been something I needed
+
+182
+00:09:08,275 --> 00:09:09,651
+and --
+
+183
+00:09:09,675 --> 00:09:13,108
+CA: So really, both Linux and Git kind of arose
+
+184
+00:09:13,132 --> 00:09:15,468
+almost as an unintended consequence
+
+185
+00:09:15,492 --> 00:09:18,163
+of your desire not to have to work with too many people.
+
+186
+00:09:18,187 --> 00:09:19,338
+LT: Absolutely. Yes.
+
+187
+00:09:19,362 --> 00:09:20,442
+(Laughter)
+
+188
+00:09:20,466 --> 00:09:22,116
+CA: That's amazing. LT: Yeah.
+
+189
+00:09:22,140 --> 00:09:23,632
+(Applause)
+
+190
+00:09:23,656 --> 00:09:27,047
+And yet, you're the man who's transformed technology
+
+191
+00:09:27,071 --> 00:09:28,388
+not just once but twice,
+
+192
+00:09:28,412 --> 00:09:30,995
+and we have to try and understand why it is.
+
+193
+00:09:31,019 --> 00:09:32,703
+You've given us some clues, but ...
+
+194
+00:09:32,727 --> 00:09:37,368
+Here's a picture of you as a kid, with a Rubik's Cube.
+
+195
+00:09:37,392 --> 00:09:41,512
+You mentioned that you've been programming since you were like 10 or 11,
+
+196
+00:09:41,536 --> 00:09:42,901
+half your life.
+
+197
+00:09:42,925 --> 00:09:46,741
+Were you this sort of computer genius, you know, übernerd,
+
+198
+00:09:46,765 --> 00:09:49,250
+were you the star at school who could do everything?
+
+199
+00:09:49,274 --> 00:09:50,806
+What were you like as a kid?
+
+200
+00:09:51,950 --> 00:09:54,443
+LT: Yeah, I think I was the prototypical nerd.
+
+201
+00:09:54,467 --> 00:09:55,736
+I mean, I was ...
+
+202
+00:09:56,950 --> 00:09:58,912
+I was not a people person back then.
+
+203
+00:09:58,936 --> 00:10:01,516
+That's my younger brother.
+
+204
+00:10:01,540 --> 00:10:04,327
+I was clearly more interested in the Rubik's Cube
+
+205
+00:10:04,351 --> 00:10:05,876
+than my younger brother.
+
+206
+00:10:05,900 --> 00:10:06,987
+(Laughter)
+
+207
+00:10:07,011 --> 00:10:10,131
+My younger sister, who's not in the picture,
+
+208
+00:10:10,155 --> 00:10:12,569
+when we had family meetings --
+
+209
+00:10:12,593 --> 00:10:16,385
+and it's not a huge family, but I have, like, a couple of cousins --
+
+210
+00:10:16,409 --> 00:10:19,273
+she would prep me beforehand.
+
+211
+00:10:19,297 --> 00:10:21,863
+Like, before I stepped into the room she would say,
+
+212
+00:10:21,887 --> 00:10:24,430
+"OK. That's so-and-so ..."
+
+213
+00:10:25,745 --> 00:10:28,074
+Because I was not --
+
+214
+00:10:28,098 --> 00:10:29,313
+I was a geek.
+
+215
+00:10:29,337 --> 00:10:30,503
+I was into computers,
+
+216
+00:10:30,527 --> 00:10:31,686
+I was into math,
+
+217
+00:10:31,710 --> 00:10:32,861
+I was into physics.
+
+218
+00:10:32,885 --> 00:10:34,036
+I was good at that.
+
+219
+00:10:34,060 --> 00:10:36,846
+I don't think I was particularly exceptional.
+
+220
+00:10:37,374 --> 00:10:39,765
+Apparently, my sister said
+
+221
+00:10:39,789 --> 00:10:46,640
+that my biggest exceptional quality was that I would not let go.
+
+222
+00:10:47,438 --> 00:10:49,995
+CA: OK, so let's go there, because that's interesting.
+
+223
+00:10:50,019 --> 00:10:51,193
+You would not let go.
+
+224
+00:10:51,217 --> 00:10:54,082
+So that's not about being a geek and being smart,
+
+225
+00:10:54,106 --> 00:10:57,211
+that's about being ... stubborn?
+
+226
+00:10:57,235 --> 00:10:58,762
+LT: That's about being stubborn.
+
+227
+00:10:58,786 --> 00:11:00,174
+That's about, like,
+
+228
+00:11:00,913 --> 00:11:03,113
+just starting something
+
+229
+00:11:03,137 --> 00:11:08,587
+and not saying, "OK, I'm done, let's do something else --
+
+230
+00:11:08,611 --> 00:11:09,798
+Look: shiny!"
+
+231
+00:11:10,774 --> 00:11:14,155
+And I notice that in many other parts in my life, too.
+
+232
+00:11:15,290 --> 00:11:18,540
+I lived in Silicon Valley for seven years.
+
+233
+00:11:18,564 --> 00:11:22,676
+And I worked for the same company, in Silicon Valley,
+
+234
+00:11:22,700 --> 00:11:24,414
+for the whole time.
+
+235
+00:11:24,438 --> 00:11:25,976
+That is unheard of.
+
+236
+00:11:27,024 --> 00:11:28,791
+That's not how Silicon Valley works.
+
+237
+00:11:28,815 --> 00:11:32,394
+The whole point of Silicon Valley is that people jump between jobs
+
+238
+00:11:32,418 --> 00:11:35,045
+to kind of mix up the pot.
+
+239
+00:11:35,069 --> 00:11:36,949
+And that's not the kind of person I am.
+
+240
+00:11:36,973 --> 00:11:39,544
+CA: But during the actual development of Linux itself,
+
+241
+00:11:39,568 --> 00:11:43,864
+that stubbornness sometimes brought you in conflict with other people.
+
+242
+00:11:44,265 --> 00:11:45,919
+Talk about that a bit.
+
+243
+00:11:45,943 --> 00:11:51,487
+Was that essential to sort of maintain the quality of what was being built?
+
+244
+00:11:51,511 --> 00:11:53,676
+How would you describe what happened?
+
+245
+00:11:54,212 --> 00:11:56,295
+LT: I don't know if it's essential.
+
+246
+00:11:57,059 --> 00:12:00,204
+Going back to the "I'm not a people person," --
+
+247
+00:12:00,228 --> 00:12:02,016
+sometimes I'm also ...
+
+248
+00:12:03,920 --> 00:12:05,453
+shall we say,
+
+249
+00:12:05,477 --> 00:12:08,897
+"myopic" when it comes to other people's feelings,
+
+250
+00:12:09,487 --> 00:12:14,765
+and that sometimes makes you say things that hurt other people.
+
+251
+00:12:14,789 --> 00:12:18,557
+And I'm not proud of that.
+
+252
+00:12:18,581 --> 00:12:19,695
+(Applause)
+
+253
+00:12:19,719 --> 00:12:21,517
+But, at the same time, it's --
+
+254
+00:12:22,798 --> 00:12:25,874
+I get people who tell me that I should be nice.
+
+255
+00:12:26,616 --> 00:12:32,284
+And then when I try to explain to them that maybe you're nice,
+
+256
+00:12:32,308 --> 00:12:34,562
+maybe you should be more aggressive,
+
+257
+00:12:34,586 --> 00:12:38,128
+they see that as me being not nice.
+
+258
+00:12:38,152 --> 00:12:40,262
+(Laughter)
+
+259
+00:12:40,286 --> 00:12:42,454
+What I'm trying to say is we are different.
+
+260
+00:12:42,478 --> 00:12:44,288
+I'm not a people person;
+
+261
+00:12:44,312 --> 00:12:46,418
+it's not something I'm particularly proud of,
+
+262
+00:12:46,442 --> 00:12:47,982
+but it's part of me.
+
+263
+00:12:48,006 --> 00:12:50,711
+And one of the things I really like about open source
+
+264
+00:12:50,735 --> 00:12:56,527
+is it really allows different people to work together.
+
+265
+00:12:56,551 --> 00:12:58,275
+We don't have to like each other --
+
+266
+00:12:58,299 --> 00:13:00,502
+and sometimes we really don't like each other.
+
+267
+00:13:00,526 --> 00:13:04,013
+Really -- I mean, there are very, very heated arguments.
+
+268
+00:13:04,037 --> 00:13:07,029
+But you can, actually, you can find things that --
+
+269
+00:13:08,147 --> 00:13:10,374
+you don't even agree to disagree,
+
+270
+00:13:10,398 --> 00:13:13,444
+it's just that you're interested in really different things.
+
+271
+00:13:13,468 --> 00:13:16,371
+And coming back to the point where I said earlier
+
+272
+00:13:16,395 --> 00:13:20,688
+that I was afraid of commercial people taking advantage of your work,
+
+273
+00:13:20,712 --> 00:13:23,311
+it turned out, and very quickly turned out,
+
+274
+00:13:23,335 --> 00:13:26,301
+that those commercial people were lovely, lovely people.
+
+275
+00:13:26,325 --> 00:13:30,031
+And they did all the things that I was not at all interested in doing,
+
+276
+00:13:30,055 --> 00:13:32,112
+and they had completely different goals.
+
+277
+00:13:32,136 --> 00:13:37,459
+And they used open source in ways that I just did not want to go.
+
+278
+00:13:37,483 --> 00:13:39,745
+But because it was open source they could do it,
+
+279
+00:13:39,769 --> 00:13:42,121
+and it actually works really beautifully together.
+
+280
+00:13:42,145 --> 00:13:44,169
+And I actually think it works the same way.
+
+281
+00:13:44,193 --> 00:13:47,398
+You need to have the people-people, the communicators,
+
+282
+00:13:47,422 --> 00:13:48,849
+the warm and friendly people
+
+283
+00:13:48,873 --> 00:13:50,595
+who like --
+
+284
+00:13:50,619 --> 00:13:52,061
+(Laughter)
+
+285
+00:13:52,085 --> 00:13:55,135
+really want to hug you and get you into the community.
+
+286
+00:13:55,159 --> 00:13:56,730
+But that's not everybody.
+
+287
+00:13:56,754 --> 00:13:58,186
+And that's not me.
+
+288
+00:13:58,210 --> 00:13:59,667
+I care about the technology.
+
+289
+00:13:59,691 --> 00:14:01,572
+There are people who care about the UI.
+
+290
+00:14:01,596 --> 00:14:04,666
+I can't do UI to save my life.
+
+291
+00:14:04,690 --> 00:14:07,711
+I mean, if I was stranded on an island
+
+292
+00:14:07,735 --> 00:14:11,135
+and the only way to get off that island was the make a pretty UI,
+
+293
+00:14:11,159 --> 00:14:12,322
+I'd die there.
+
+294
+00:14:12,346 --> 00:14:13,497
+(Laughter)
+
+295
+00:14:13,521 --> 00:14:15,660
+So there's different kinds of people,
+
+296
+00:14:15,684 --> 00:14:18,549
+and I'm not making excuses, I'm trying to explain.
+
+297
+00:14:18,573 --> 00:14:20,239
+CA: Now, when we talked last week,
+
+298
+00:14:20,263 --> 00:14:22,748
+you talked about some other trait that you have,
+
+299
+00:14:22,772 --> 00:14:24,363
+which I found really interesting.
+
+300
+00:14:24,387 --> 00:14:25,770
+It's this idea called taste.
+
+301
+00:14:25,794 --> 00:14:27,796
+And I've just got a couple of images here.
+
+302
+00:14:28,174 --> 00:14:32,177
+I think this is an example of not particularly good taste in code,
+
+303
+00:14:32,201 --> 00:14:35,192
+and this one is better taste,
+
+304
+00:14:35,216 --> 00:14:37,279
+which one can immediately see.
+
+305
+00:14:37,303 --> 00:14:39,276
+What is the difference between these two?
+
+306
+00:14:40,459 --> 00:14:41,641
+LT: So this is --
+
+307
+00:14:41,665 --> 00:14:44,342
+How many people here actually have coded?
+
+308
+00:14:45,491 --> 00:14:47,011
+CA: Oh my goodness.
+
+309
+00:14:47,035 --> 00:14:48,190
+LT: So I guarantee you,
+
+310
+00:14:48,214 --> 00:14:49,759
+everybody who raised their hand,
+
+311
+00:14:49,783 --> 00:14:52,404
+they have done what's called a singly-linked list.
+
+312
+00:14:52,428 --> 00:14:54,437
+And it's taught --
+
+313
+00:14:54,935 --> 00:14:58,526
+This, the first not very good taste approach,
+
+314
+00:14:58,550 --> 00:15:02,617
+is basically how it's taught to be done when you start out coding.
+
+315
+00:15:02,641 --> 00:15:04,685
+And you don't have to understand the code.
+
+316
+00:15:04,709 --> 00:15:06,765
+The most interesting part to me
+
+317
+00:15:06,789 --> 00:15:08,978
+is the last if statement.
+
+318
+00:15:10,753 --> 00:15:13,013
+Because what happens in a singly-linked list --
+
+319
+00:15:13,037 --> 00:15:16,687
+this is trying to remove an existing entry from a list --
+
+320
+00:15:16,711 --> 00:15:20,553
+and there's a difference between if it's the first entry
+
+321
+00:15:20,577 --> 00:15:22,576
+or whether it's an entry in the middle.
+
+322
+00:15:22,600 --> 00:15:24,205
+Because if it's the first entry,
+
+323
+00:15:24,229 --> 00:15:27,245
+you have to change the pointer to the first entry.
+
+324
+00:15:27,269 --> 00:15:28,467
+If it's in the middle,
+
+325
+00:15:28,491 --> 00:15:30,912
+you have to change the pointer of a previous entry.
+
+326
+00:15:30,936 --> 00:15:32,960
+So they're two completely different cases.
+
+327
+00:15:32,984 --> 00:15:34,136
+CA: And that's better.
+
+328
+00:15:34,160 --> 00:15:35,341
+LT: And this is better.
+
+329
+00:15:35,760 --> 00:15:38,083
+It does not have the if statement.
+
+330
+00:15:38,457 --> 00:15:40,670
+And it doesn't really matter --
+
+331
+00:15:40,694 --> 00:15:43,895
+I don't want you understand why it doesn't have the if statement,
+
+332
+00:15:43,919 --> 00:15:45,261
+but I want you to understand
+
+333
+00:15:45,285 --> 00:15:47,910
+that sometimes you can see a problem in a different way
+
+334
+00:15:47,934 --> 00:15:51,288
+and rewrite it so that a special case goes away
+
+335
+00:15:51,312 --> 00:15:53,189
+and becomes the normal case.
+
+336
+00:15:53,213 --> 00:15:54,752
+And that's good code.
+
+337
+00:15:55,148 --> 00:15:56,698
+But this is simple code.
+
+338
+00:15:56,722 --> 00:15:58,071
+This is CS 101.
+
+339
+00:15:58,095 --> 00:16:00,951
+This is not important -- although, details are important.
+
+340
+00:16:01,618 --> 00:16:05,696
+To me, the sign of people I really want to work with
+
+341
+00:16:05,720 --> 00:16:08,393
+is that they have good taste, which is how ...
+
+342
+00:16:09,115 --> 00:16:10,712
+I sent you this stupid example
+
+343
+00:16:10,736 --> 00:16:13,080
+that is not relevant because it's too small.
+
+344
+00:16:13,563 --> 00:16:15,705
+Good taste is much bigger than this.
+
+345
+00:16:15,729 --> 00:16:19,750
+Good taste is about really seeing the big patterns
+
+346
+00:16:19,774 --> 00:16:24,232
+and kind of instinctively knowing what's the right way to do things.
+
+347
+00:16:24,256 --> 00:16:26,913
+CA: OK, so we're putting the pieces together here now.
+
+348
+00:16:27,556 --> 00:16:29,023
+You have taste,
+
+349
+00:16:29,877 --> 00:16:32,214
+in a way that's meaningful to software people.
+
+350
+00:16:32,238 --> 00:16:33,389
+You're --
+
+351
+00:16:33,413 --> 00:16:35,229
+(Laughter)
+
+352
+00:16:35,253 --> 00:16:37,814
+LT: I think it was meaningful to some people here.
+
+353
+00:16:39,787 --> 00:16:42,704
+CA: You're a very smart computer coder,
+
+354
+00:16:42,728 --> 00:16:44,425
+and you're hellish stubborn.
+
+355
+00:16:45,442 --> 00:16:47,028
+But there must be something else.
+
+356
+00:16:47,052 --> 00:16:48,675
+I mean, you've changed the future.
+
+357
+00:16:48,699 --> 00:16:51,662
+You must have the ability of these grand visions of the future.
+
+358
+00:16:51,686 --> 00:16:52,947
+You're a visionary, right?
+
+359
+00:16:52,971 --> 00:16:55,562
+LT: I've actually felt slightly uncomfortable at TED
+
+360
+00:16:55,586 --> 00:16:57,746
+for the last two days,
+
+361
+00:16:57,770 --> 00:17:00,365
+because there's a lot of vision going on, right?
+
+362
+00:17:00,389 --> 00:17:02,086
+And I am not a visionary.
+
+363
+00:17:02,110 --> 00:17:04,339
+I do not have a five-year plan.
+
+364
+00:17:04,363 --> 00:17:05,721
+I'm an engineer.
+
+365
+00:17:05,745 --> 00:17:07,005
+And I think it's really --
+
+366
+00:17:07,029 --> 00:17:09,348
+I mean -- I'm perfectly happy with all the people
+
+367
+00:17:09,372 --> 00:17:12,123
+who are walking around and just staring at the clouds
+
+368
+00:17:12,147 --> 00:17:14,998
+and looking at the stars and saying, "I want to go there."
+
+369
+00:17:15,022 --> 00:17:16,474
+But I'm looking at the ground,
+
+370
+00:17:16,498 --> 00:17:19,353
+and I want to fix the pothole that's right in front of me
+
+371
+00:17:19,377 --> 00:17:20,737
+before I fall in.
+
+372
+00:17:20,761 --> 00:17:22,380
+This is the kind of person I am.
+
+373
+00:17:22,404 --> 00:17:23,515
+(Cheers)
+
+374
+00:17:23,539 --> 00:17:24,851
+(Applause)
+
+375
+00:17:24,875 --> 00:17:28,486
+CA: So you spoke to me last week about these two guys.
+
+376
+00:17:29,178 --> 00:17:31,613
+Who are they and how do you relate to them?
+
+377
+00:17:32,059 --> 00:17:35,661
+LT: Well, so this is kind of cliché in technology,
+
+378
+00:17:35,685 --> 00:17:37,692
+the whole Tesla versus Edison,
+
+379
+00:17:37,716 --> 00:17:42,657
+where Tesla is seen as the visionary scientist and crazy idea man.
+
+380
+00:17:42,681 --> 00:17:45,463
+And people love Tesla.
+
+381
+00:17:45,487 --> 00:17:48,474
+I mean, there are people who name their companies after him.
+
+382
+00:17:48,498 --> 00:17:49,648
+(Laughter)
+
+383
+00:17:51,185 --> 00:17:53,797
+The other person there is Edison,
+
+384
+00:17:53,821 --> 00:17:57,328
+who is actually often vilified for being kind of pedestrian
+
+385
+00:17:57,352 --> 00:17:59,273
+and is --
+
+386
+00:17:59,297 --> 00:18:02,019
+I mean, his most famous quote is,
+
+387
+00:18:02,043 --> 00:18:06,757
+"Genius is one percent inspiration and 99 percent perspiration."
+
+388
+00:18:07,214 --> 00:18:08,667
+And I'm in the Edison camp,
+
+389
+00:18:08,691 --> 00:18:10,875
+even if people don't always like him.
+
+390
+00:18:10,899 --> 00:18:13,918
+Because if you actually compare the two,
+
+391
+00:18:13,942 --> 00:18:18,475
+Tesla has kind of this mind grab these days,
+
+392
+00:18:18,499 --> 00:18:20,498
+but who actually changed the world?
+
+393
+00:18:21,673 --> 00:18:25,055
+Edison may not have been a nice person,
+
+394
+00:18:25,079 --> 00:18:28,211
+he did a lot of things --
+
+395
+00:18:28,235 --> 00:18:30,664
+he was maybe not so intellectual,
+
+396
+00:18:30,688 --> 00:18:32,915
+not so visionary.
+
+397
+00:18:32,939 --> 00:18:36,600
+But I think I'm more of an Edison than a Tesla.
+
+398
+00:18:37,489 --> 00:18:39,927
+CA: So our theme at TED this week is dreams --
+
+399
+00:18:39,951 --> 00:18:41,298
+big, bold, audacious dreams.
+
+400
+00:18:41,322 --> 00:18:43,124
+You're really the antidote to that.
+
+401
+00:18:43,148 --> 00:18:45,257
+LT: I'm trying to dial it down a bit, yes.
+
+402
+00:18:45,281 --> 00:18:46,432
+CA: That's good.
+
+403
+00:18:46,456 --> 00:18:47,536
+(Laughter)
+
+404
+00:18:47,560 --> 00:18:49,165
+We embrace you, we embrace you.
+
+405
+00:18:50,866 --> 00:18:53,615
+Companies like Google and many others have made, arguably,
+
+406
+00:18:53,639 --> 00:18:55,845
+like, billions of dollars out of your software.
+
+407
+00:18:55,869 --> 00:18:57,020
+Does that piss you off?
+
+408
+00:18:57,044 --> 00:18:58,195
+LT: No.
+
+409
+00:18:58,219 --> 00:19:00,853
+No, it doesn't piss me off for several reasons.
+
+410
+00:19:00,877 --> 00:19:02,887
+And one of them is, I'm doing fine.
+
+411
+00:19:02,911 --> 00:19:04,207
+I'm really doing fine.
+
+412
+00:19:04,762 --> 00:19:06,346
+But the other reason is --
+
+413
+00:19:06,370 --> 00:19:11,697
+I mean, without doing the whole open source and really letting go thing,
+
+414
+00:19:11,721 --> 00:19:13,947
+Linux would never have been what it is.
+
+415
+00:19:13,971 --> 00:19:19,067
+And it's brought experiences I don't really enjoy, public talking,
+
+416
+00:19:19,091 --> 00:19:21,242
+but at the same time, this is an experience.
+
+417
+00:19:21,266 --> 00:19:22,546
+Trust me.
+
+418
+00:19:23,058 --> 00:19:28,201
+So there's a lot of things going on that make me a very happy man
+
+419
+00:19:28,225 --> 00:19:30,754
+and thinking I did the right choices.
+
+420
+00:19:30,778 --> 00:19:32,690
+CA: Is the open source idea --
+
+421
+00:19:32,714 --> 00:19:34,350
+this is, I think we'll end here --
+
+422
+00:19:34,374 --> 00:19:38,428
+is the open source idea fully realized now in the world,
+
+423
+00:19:38,452 --> 00:19:41,470
+or is there more that it could go,
+
+424
+00:19:41,494 --> 00:19:43,509
+are there more things that it could do?
+
+425
+00:19:44,558 --> 00:19:46,792
+LT: So, I'm of two minds there.
+
+426
+00:19:46,816 --> 00:19:51,302
+I think one reason open source works so well in code
+
+427
+00:19:51,326 --> 00:19:53,735
+is that at the end of the day,
+
+428
+00:19:53,759 --> 00:19:57,005
+code tends to be somewhat black and white.
+
+429
+00:19:57,029 --> 00:20:01,186
+There's often a fairly good way to decide,
+
+430
+00:20:01,210 --> 00:20:05,156
+this is done correctly and this is not done well.
+
+431
+00:20:05,180 --> 00:20:07,558
+Code either works or it doesn't,
+
+432
+00:20:07,582 --> 00:20:12,190
+which means that there's less room for arguments.
+
+433
+00:20:12,214 --> 00:20:15,845
+And we have arguments despite this, right?
+
+434
+00:20:15,869 --> 00:20:17,784
+In many other areas --
+
+435
+00:20:17,808 --> 00:20:21,549
+I mean, people have talked about open politics and things like that --
+
+436
+00:20:21,573 --> 00:20:24,522
+and it's really hard sometimes to say
+
+437
+00:20:24,546 --> 00:20:28,303
+that, yes, you can apply the same principles in some other areas
+
+438
+00:20:28,327 --> 00:20:33,766
+just because the black and white turns into not just gray,
+
+439
+00:20:33,790 --> 00:20:35,393
+but different colors.
+
+440
+00:20:36,159 --> 00:20:40,525
+So, obviously open source in science is making a comeback.
+
+441
+00:20:40,549 --> 00:20:42,183
+Science was there first.
+
+442
+00:20:42,207 --> 00:20:44,874
+But then science ended up being pretty closed,
+
+443
+00:20:44,898 --> 00:20:48,522
+with very expensive journals and some of that going on.
+
+444
+00:20:48,546 --> 00:20:52,382
+And open source is making a comeback in science,
+
+445
+00:20:52,406 --> 00:20:56,553
+with things like arXiv and open journals.
+
+446
+00:20:59,082 --> 00:21:01,035
+Wikipedia changed the world, too.
+
+447
+00:21:01,059 --> 00:21:02,513
+So there are other examples,
+
+448
+00:21:02,537 --> 00:21:04,170
+I'm sure there are more to come.
+
+449
+00:21:05,480 --> 00:21:07,047
+CA: But you're not a visionary,
+
+450
+00:21:07,071 --> 00:21:09,024
+and so it's not up to you to name them.
+
+451
+00:21:09,048 --> 00:21:10,207
+LT: No.
+
+452
+00:21:10,231 --> 00:21:11,279
+(Laughter)
+
+453
+00:21:11,303 --> 00:21:13,267
+It's up to you guys to make them, right?
+
+454
+00:21:13,291 --> 00:21:14,554
+CA: Exactly.
+
+455
+00:21:14,578 --> 00:21:15,736
+Linus Torvalds,
+
+456
+00:21:15,760 --> 00:21:18,005
+thank you for Linux, thank you for the Internet,
+
+457
+00:21:18,029 --> 00:21:19,894
+thank you for all those Android phones.
+
+458
+00:21:19,918 --> 00:21:23,115
+Thank you for coming here to TED and revealing so much of yourself.
+
+459
+00:21:23,139 --> 00:21:24,291
+LT: Thank you.
+
+460
+00:21:24,315 --> 00:21:28,755
+(Applause)
+
