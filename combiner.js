@@ -68,16 +68,41 @@ const findSentenceInRecognition = (sentence, recognizedWordPositions, offsetTole
     }, null)
 };
 
+const dropUnlikelyCandidates = (candidates) => {
+  const maxLength = _.max(candidates.map((candidate) => candidate.length));
+  return _.filter(candidates, (candidate) => candidate.length === maxLength);
+}
+
 Combiner.combine = (subtitle, recognitionResult) => {
   return new Promise((resolve, reject) => {
     const recognizedWordList = getRecognizedWordList(recognitionResult);
     const recognizedWordPositions = getRecognizedWordPositions(recognizedWordList);
-    const res = findSentenceInRecognition(subtitle[0].text, recognizedWordPositions);
+    const sentences = _.map(subtitle, (item) => item.text);
 
-    console.log(JSON.stringify(subtitle[0].text));
-    console.log(JSON.stringify(res));
+    sentences.forEach((sentence, i) => {
+      let candidates = findSentenceInRecognition(sentence, recognizedWordPositions);
+      if (!candidates) {
+        console.log(`XX:XX:XX,XXX --> XX:XX:XX,XXX`);
+        console.log(sentence);
+        return;
+      }
+      candidates = dropUnlikelyCandidates(candidates);
 
-    // TODO:
+      const getDuration = (positions) => {
+        const firstWord = recognizedWordList[_.head(positions)];
+        const lastWord = recognizedWordList[_.last(positions)];
+        return {
+          from: firstWord.startTime,
+          to: firstWord.endTime
+        };
+      };
+
+      candidates.forEach((candidate) => {
+        const duration = getDuration(candidate);
+        console.log(`${duration.from} --> ${duration.to}`);
+      });
+      console.log(sentence);
+    });
   });
 };
 
