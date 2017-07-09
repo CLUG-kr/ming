@@ -43,7 +43,7 @@ program
   .command('combine [subtitle] [recognition_result]')
   .description('Generate fixed subtitle using recognition result and misaligned subtitle')
   .option('-o, --output-file [filepath]', 'Save a new subtitle to given path')
-  .action((subtitleFilepath, recognitionFilepath) => {
+  .action((subtitleFilepath, recognitionFilepath, options) => {
     if (!subtitleFilepath) return console.error('The subtitle file must be given');
     if (!recognitionFilepath) return console.error('The recognition result file must be given');
 
@@ -51,8 +51,18 @@ program
     const recognitionResult = JSON.parse(fs.readFileSync(recognitionFilepath, 'utf-8'));
 
     combiner.combine(subtitle, recognitionResult)
-      .then((newSubtitleText) => {
-        console.log('Combining is done: ', newSubtitleText);
+      .then((newSubtitle) => {
+        const text = newSubtitle
+          .map((item) => {
+            const { id, text, startTime, endTime } = item;
+            return `${id}\n${startTime} --> ${endTime}\n${text}\n`
+          })
+          .join("\n");
+        if (options.outputFile) {
+          fs.writeFileSync(options.outputFile, text);
+        } else {
+          console.log(text);
+        }
       })
       .catch((err) => {
         console.error('Error while combining subtitle and recognition result:', err);

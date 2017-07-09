@@ -30,8 +30,8 @@ const getRecognizedWordList = (recognitionResult) => {
       return {
         id: index+1,
         text: normalizeString(word.text),
-        startTime: convertRecognitionTimeToSubtitleTime(word.startTime),
-        endTime: convertRecognitionTimeToSubtitleTime(word.endTime)
+        startTime: word.startTime,
+        endTime: word.endTime
       };
     });
 };
@@ -68,9 +68,38 @@ const findSentenceInRecognition = (sentence, recognizedWordPositions, offsetTole
     }, null)
 };
 
-const dropUnlikelyCandidates = (candidates) => {
-  const maxLength = _.max(candidates.map((candidate) => candidate.length));
-  return _.filter(candidates, (candidate) => candidate.length === maxLength);
+const dropUnlikelyCandidates = (sentenceCandidates) => {
+  const maxLength = _.max(sentenceCandidates.map((candidate) => candidate.length));
+  return _.filter(sentenceCandidates, (candidate) => candidate.length === maxLength);
+}
+
+const findLIS = (candidates) => {
+  let lisTable = _.times(candidates.length, _.constant(0));
+  for (let i = 0; i < candidates.length; i++) {
+    const max = candidates
+      .map((candidate, index) => {
+        const { startTime, endTime, sentenceId } = candidate;
+        return { startTime, endTime, sentenceId, index };
+      })
+      .filter((candidate) => {
+        const { startTime, endTime, sentenceId, index } = candidate;
+        return endTime <= candidates[i].startTime && sentenceId < candidates[i].sentenceId;
+      })
+      .map((candidate) => lisTable[candidate.index])
+      .reduce((a, b) => a > b ? a : b, 0);
+    lisTable[i] = max + 1;
+  }
+  let nextSequenceLength = _.reduce(lisTable, (a, b) => _.max([a, b]));
+  let lastSequenceId = 987654321;
+  let lis = [];
+  for (let i = candidates.length - 1; i >= 0; i--) {
+    if (lisTable[i] === nextSequenceLength && candidates[i].sentenceId < lastSequenceId) {
+      nextSequenceLength--;
+      lastSequenceId = candidates[i].sentenceId;
+      lis.push(candidates[i]);
+    }
+  }
+  return lis.reverse();
 }
 
 Combiner.combine = (subtitle, recognitionResult) => {
@@ -79,30 +108,35 @@ Combiner.combine = (subtitle, recognitionResult) => {
     const recognizedWordPositions = getRecognizedWordPositions(recognizedWordList);
     const sentences = _.map(subtitle, (item) => item.text);
 
-    sentences.forEach((sentence, i) => {
-      let candidates = findSentenceInRecognition(sentence, recognizedWordPositions);
-      if (!candidates) {
-        console.log(`XX:XX:XX,XXX --> XX:XX:XX,XXX`);
-        console.log(sentence);
-        return;
-      }
-      candidates = dropUnlikelyCandidates(candidates);
+    let candidates = sentences
+      .map((sentence, sentenceId) => {
+        let sentenceCandidates = findSentenceInRecognition(sentence, recognizedWordPositions);
+        if (!sentenceCandidates) {
+          return [];
+        }
+        sentenceCandidates = dropUnlikelyCandidates(sentenceCandidates);
+        return sentenceCandidates.map((sentenceCandidate) => {
+          const firstWord = recognizedWordList[_.head(sentenceCandidate)];
+          const lastWord = recognizedWordList[_.last(sentenceCandidate)];
+          return {
+            startTime: firstWord.startTime,
+            endTime: lastWord.endTime,
+            sentenceId
+          };
+        });
+      })
+      .reduce((a, b) => a.concat(b));
 
-      const getDuration = (positions) => {
-        const firstWord = recognizedWordList[_.head(positions)];
-        const lastWord = recognizedWordList[_.last(positions)];
-        return {
-          from: firstWord.startTime,
-          to: firstWord.endTime
-        };
-      };
-
-      candidates.forEach((candidate) => {
-        const duration = getDuration(candidate);
-        console.log(`${duration.from} --> ${duration.to}`);
-      });
-      console.log(sentence);
+    candidates = _.sortBy(candidates, [(candidate) => candidate.endTime]);
+    const lis = findLIS(candidates);
+    const newSubtitle = lis.map((candidate, index) => {
+      const id = index + 1;
+      const text = subtitle[candidate.sentenceId].text;
+      const startTime = convertRecognitionTimeToSubtitleTime(candidate.startTime);
+      const endTime = convertRecognitionTimeToSubtitleTime(candidate.endTime);
+      return { id, text, startTime, endTime };
     });
+    resolve(newSubtitle);
   });
 };
 
