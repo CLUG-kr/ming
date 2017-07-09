@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/CLUG-kr/ming#readme",
   "dependencies": {
+    "binary-search-bounds": "^2.0.3",
     "commander": "^2.10.0",
     "fluent-ffmpeg": "^2.1.2",
     "lodash": "^4.17.4",
