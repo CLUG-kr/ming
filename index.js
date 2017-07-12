@@ -5,6 +5,7 @@ let SpeechToTextV1 = require('watson-developer-cloud/speech-to-text/v1');
 let fs = require('fs');
 let subtitlesParser = require('subtitles-parser');
 
+let accuracyCommand = require('./commands/accuracy');
 let combiner = require('./combiner');
 
 program.version('0.0.1');
@@ -69,6 +70,10 @@ program
       });
   });
 
+program
+  .command('accuracy [generated] [ground_truth]')
+  .description('Compute accuracy (currently, Jaccard Index)')
+  .action(accuracyCommand);
 
 program
   .command('*')
