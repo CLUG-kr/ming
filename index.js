@@ -6,6 +6,7 @@ let fs = require('fs');
 let subtitlesParser = require('subtitles-parser');
 
 let accuracyCommand = require('./commands/accuracy');
+const testCommand = require('./commands/test');
 let combiner = require('./combiner');
 
 program.version('0.0.1');
@@ -74,6 +75,10 @@ program
   .command('accuracy [generated] [ground_truth]')
   .description('Compute accuracy (currently, Jaccard Index)')
   .action(accuracyCommand);
+
+program
+  .command('test [test_id] [...args]')
+  .action(testCommand);
 
 program
   .command('*')
