@@ -1,18 +1,9 @@
 const _ = require('lodash');
 const assert = require('assert');
 const fs = require('fs');
-const moment = require('moment'); require('moment-duration-format');
 const subtitlesParser = require('subtitles-parser');
 
-const convertSubtitleTimeToSeconds = (subtitleTimeString) => {
-  const time = moment(subtitleTimeString, "hh:mm:ss,SSS");
-  return moment.duration({
-    hours: time.hours(),
-    minutes: time.minutes(),
-    seconds: time.seconds(),
-    milliseconds: time.milliseconds()
-  }).asSeconds();
-}
+const { convertFormatToSeconds } = require('../utils');
 
 const getJaccardIndexInternal = (a, b) => {
   assert(typeof a.start === 'number');
@@ -33,12 +24,12 @@ const zeros = n => _.fill(_.range(n), 0);
 
 const getJaccardIndex = (a, b) => {
   const aSeconds = {
-    start: convertSubtitleTimeToSeconds(a.startTime),
-    end: convertSubtitleTimeToSeconds(a.endTime),
+    start: convertFormatToSeconds(a.startTime),
+    end: convertFormatToSeconds(a.endTime),
   };
   const bSeconds = {
-    start: convertSubtitleTimeToSeconds(b.startTime),
-    end: convertSubtitleTimeToSeconds(b.endTime),
+    start: convertFormatToSeconds(b.startTime),
+    end: convertFormatToSeconds(b.endTime),
   }
   return getJaccardIndexInternal(aSeconds, bSeconds);
 };
