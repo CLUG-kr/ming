@@ -46,8 +46,8 @@ const findLIS = (candidates) => {
   for (let i = 0; i < candidates.length; i++) {
     const max = candidates
       .map((candidate, index) => {
-        const { startTime, endTime, sentenceId } = candidate;
-        return { startTime, endTime, sentenceId, index };
+        const { startTime, endTime, sentenceId, data } = candidate;
+        return { startTime, endTime, sentenceId, index, data };
       })
       .filter((candidate) => {
         const { startTime, endTime, sentenceId, index } = candidate;
@@ -87,6 +87,9 @@ Combiner.combine = (subtitle, recognitionResult) => {
           const firstWord = recognizedWordList[_.head(sentenceCandidate)];
           const lastWord = recognizedWordList[_.last(sentenceCandidate)];
           return {
+            data: {
+              sentenceCandidate
+            },
             startTime: firstWord.startTime,
             endTime: lastWord.endTime,
             sentenceId
@@ -102,7 +105,7 @@ Combiner.combine = (subtitle, recognitionResult) => {
       const text = subtitle[candidate.sentenceId].text;
       const startTime = convertSecondsToFormat(candidate.startTime);
       const endTime = convertSecondsToFormat(candidate.endTime);
-      return { id, text, startTime, endTime };
+      return { id, text, startTime, endTime, data: candidate.data };
     });
     resolve(newSubtitle);
   });
