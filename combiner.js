@@ -13,27 +13,44 @@ const getRecognizedWordPositions = (wordList) => {
   return map;
 };
 
+const findCandidatesByRecursion = (items, i, context, cb) => {
+  context.push(i);
+  cb(_.clone(context));
+  items[i].next.forEach(j => {
+    findCandidatesByRecursion(items, j, context, cb);
+  });
+  context.pop();
+};
+
 const findSentenceInRecognition = (sentence, recognizedWordPositions, offsetTolerate = 3) => {
-  return sentence.split(' ')
-    .map(normalizeString)
-    .map((word) => recognizedWordPositions[word])
-    .reduce((prev, curr) => {
-      if (!curr) return prev;
-      if (!prev) return curr.map((position) => [position]);
-      curr.forEach((position) => {
-        prev.filter((prevPosArr) => {
-          const offset = position - _.last(prevPosArr);
-          return offset >= 1 && offset <= offsetTolerate;
-        }).forEach((prevPosArr) => {
-          prevPosArr.push(position);
-        });
-      });
-      return prev.concat(curr
-        .filter((position) => {
-          return prev.every((prevPosArr) => _.last(prevPosArr) !== position);
-        })
-        .map((pos) => [pos]) || []);
-    }, null)
+  const sentenceWords = sentence.split(' ').map(normalizeString).filter(word => word.length > 0);
+  let items = _.sortBy(
+    _.flatten(sentenceWords
+      .map((word, s_position) => (recognizedWordPositions[word] || [])
+      .map(r_position => ({ s_position, r_position, word, next: [] })))),
+    item => item.r_position);
+
+  items.forEach((item, i, items) => {
+    const remainingWordCountInSentence = (sentenceWords.length - 1 - item.s_position);
+    const until_r_position = item.r_position + remainingWordCountInSentence * 2;
+    while (items.length > i+1 && items[i+1].r_position <= until_r_position) {
+      i++;
+      const s_position_diff = items[i].s_position - item.s_position;
+      const r_position_diff = items[i].r_position - item.r_position;
+      if (s_position_diff > 0 && r_position_diff <= s_position_diff * 2) {
+        item.next.push(i);
+      }
+    }
+    if (process.env.NODE_ENV === "DEBUG") console.log(`item=${JSON.stringify(item)} remaining=${remainingWordCountInSentence} until=${until_r_position}`);
+  });
+
+  const candidates = [];
+  for (let i = 0; i < items.length; i++) {
+    findCandidatesByRecursion(items, i, [], (foundCandidate) => {
+      candidates.push(foundCandidate.map(pos => items[pos].r_position));
+    });
+  }
+  return (_.takeRight(_.sortBy(candidates, candidate => candidate.length), 20));
 };
 
 const dropUnlikelyCandidates = (sentenceCandidates) => {
@@ -79,6 +96,14 @@ Combiner.combine = (subtitle, recognitionResult) => {
     let candidates = sentences
       .map((sentence, sentenceId) => {
         let sentenceCandidates = findSentenceInRecognition(sentence, recognizedWordPositions);
+        /*
+        if (sentenceId + 1 === 22) {
+          console.log(`findSentenceInRecognition: ${sentence}`);
+          sentenceCandidates.forEach(cand => {
+            console.log(cand.map(pos => `${recognizedWordList[pos].text}(${pos})`).join(" "));
+          });
+        }
+        */
         if (!sentenceCandidates) {
           return [];
         }
@@ -105,8 +130,35 @@ Combiner.combine = (subtitle, recognitionResult) => {
       const text = subtitle[candidate.sentenceId].text;
       const startTime = convertSecondsToFormat(candidate.startTime);
       const endTime = convertSecondsToFormat(candidate.endTime);
-      return { id, text, startTime, endTime, data: candidate.data };
+      return { id, text, startTime, endTime, data: {
+        originalId: candidate.sentenceId + 1,
+        sentenceCandidate: candidate.data.sentenceCandidate
+      }};
     });
+
+  //let expectWordPosition = 0;
+  //let expectOriginalId = 1;
+  //newSubtitle.forEach(item => {
+  //  const { id, text, startTime, endTime, data: { originalId, sentenceCandidate } } = item;
+
+  //
+  //  for (let i = expectOriginalId; i < originalId; i++) {
+  //    console.log(`>>>>> Unmatched PIECE: ${subtitle[i-1].text}`);
+  //  }
+  //  expectOriginalId = originalId + 1;
+  //  for (let pos = expectWordPosition; pos < _.head(sentenceCandidate); pos++) {
+  //    console.log(`>>>>> Unmatched WORD: ${recognizedWordList[pos].text}(${pos})`);
+  //  }
+  //  console.log(``);
+  //  expectWordPosition = _.last(sentenceCandidate) + 1;
+
+  //  console.log(`${id} (${originalId})`);
+  //  console.log(`${startTime} --> ${endTime}`);
+  //  console.log(`${text}`);
+  //  console.log(sentenceCandidate.map(pos => `${recognizedWordList[pos].text}(${pos})`).join(" "));
+  //  console.log(``);
+  //});
+
     resolve(newSubtitle);
   });
 };
