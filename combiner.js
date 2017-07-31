@@ -1,4 +1,5 @@
 let _ = require('lodash');
+const levenshtein = require('fast-levenshtein');
 
 const { convertSecondsToFormat, normalizeString, getRecognizedWordList } = require('./utils');
 
@@ -159,6 +160,79 @@ Combiner.combine = (subtitle, recognitionResult) => {
   //  console.log(``);
   //});
 
+    // Interpolation
+    let expectWordPosition = 0;
+    let expectOriginalId = 1;
+    _.flatten(newSubtitle.map((item, i) => {
+      const { id, text, startTime, endTime, data: { originalId, sentenceCandidate } } = item;
+
+      const unmatchedPieces = _.slice(subtitle, expectOriginalId - 1, originalId - 1)
+      // console.log('piece', unmatchedPieces.map(piece => piece.text));
+      expectOriginalId = originalId + 1;
+
+      const unmatchedWords = _.slice(recognizedWordList, expectWordPosition, _.head(sentenceCandidate));
+      // console.log('word', unmatchedWords.map(word => word.text));
+      expectWordPosition = _.last(sentenceCandidate) + 1;
+
+      const prevItem = newSubtitle[i - 1];
+      const currItem = item;
+
+      if (unmatchedWords.length === 0) return [];
+
+      let minDistance = 987654321;
+      let minIndex = { prevEnd: -1, currStart: -1 };
+      for (let prevEnd = 0; prevEnd <= unmatchedWords.length; prevEnd++) {
+        for (let currStart = prevEnd; currStart <= unmatchedWords.length; currStart++) {
+          const prevDistance = !prevItem ? 0 : levenshtein.get(
+            prevItem.text.split(' ').map(normalizeString).join(""),
+            _.slice(
+              recognizedWordList.map(word => word.text),
+              _.head(prevItem.data.sentenceCandidate),
+              _.last(prevItem.data.sentenceCandidate) + 1 + prevEnd).join("")
+          );
+          const currDistance = levenshtein.get(
+            currItem.text.split(' ').map(normalizeString).join(""),
+            _.slice(
+              recognizedWordList.map(word => word.text),
+              _.head(currItem.data.sentenceCandidate) - unmatchedWords.length + currStart,
+              _.last(currItem.data.sentenceCandidate) + 1).join("")
+          );
+
+          if (minDistance > prevDistance + currDistance) {
+            minDistance = prevDistance + currDistance;
+            minIndex = { prevEnd, currStart };
+          }
+        }
+      }
+
+      const { prevEnd, currStart } = minIndex;
+      const ret = [];
+      if (prevEnd > 0) {
+        ret.push({
+          id: newSubtitle[i-1].id,
+          type: "prev",
+          words: unmatchedWords.slice(0, prevEnd)
+        })
+      }
+      if (currStart < unmatchedWords.length) {
+        ret.push({
+          id,
+          type: "curr",
+          words: unmatchedWords.slice(currStart)
+        })
+      }
+      return ret;
+    }))
+      .forEach(update => {
+        const { id, type, words } = update;
+        if (type === "prev") {
+          newSubtitle[id-1].endTime = convertSecondsToFormat(_.last(words).endTime);
+          newSubtitle[id-1].data.sentenceCandidate = newSubtitle[id-1].data.sentenceCandidate.concat(words.map(word => word.id - 1))
+        } else if (type === "curr") {
+          newSubtitle[id-1].startTime = convertSecondsToFormat(_.head(words).startTime);
+          newSubtitle[id-1].data.sentenceCandidate = words.map(word => word.id-1).concat(newSubtitle[id - 1].data.sentenceCandidate)
+        }
+      });
     resolve(newSubtitle);
   });
 };
