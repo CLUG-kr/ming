@@ -63,7 +63,9 @@ program
         if (options.outputFile) {
           fs.writeFileSync(options.outputFile, text);
         } else {
-          console.log(text);
+          if (process.env.NODE_ENV !== "DEBUG") {
+            console.log(text);
+          }
         }
       })
       .catch((err) => {
