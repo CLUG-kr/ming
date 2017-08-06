@@ -132,16 +132,24 @@ Combiner.combine = (subtitle, recognitionResult) => {
     // Interpolation
     let expectWordPosition = 0;
     let expectOriginalId = 1;
-    _.flatten(newSubtitle.map((item, i) => {
+    const interpolations = _.flatten(newSubtitle.map((item, i) => {
       const { id, text, startTime, endTime, data: { originalId, sentenceCandidate } } = item;
 
       const unmatchedPieces = _.slice(subtitle, expectOriginalId - 1, originalId - 1)
-      // console.log('piece', unmatchedPieces.map(piece => piece.text));
       expectOriginalId = originalId + 1;
 
       const unmatchedWords = _.slice(recognizedWordList, expectWordPosition, _.head(sentenceCandidate));
-      // console.log('word', unmatchedWords.map(word => word.text));
       expectWordPosition = _.last(sentenceCandidate) + 1;
+
+      if (process.env.NODE_ENV === "DEBUG" && unmatchedPieces.length + unmatchedWords.length > 0) {
+        console.log(`ID: ${id}`);
+        if (unmatchedPieces.length > 0) {
+          console.log('    PIECE', unmatchedPieces.map(piece => piece.text));
+        }
+        if (unmatchedWords.length > 0) {
+          console.log('    WORD', unmatchedWords.map(word => word.text));
+        }
+      }
 
       const prevItem = newSubtitle[i - 1];
       const currItem = item;
@@ -191,8 +199,9 @@ Combiner.combine = (subtitle, recognitionResult) => {
         })
       }
       return ret;
-    }))
-      .forEach(update => {
+    }));
+
+    interpolations.forEach(update => {
         const { id, type, words } = update;
         if (type === "prev") {
           newSubtitle[id-1].endTime = convertSecondsToFormat(_.last(words).endTime);
