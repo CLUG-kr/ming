@@ -3,11 +3,11 @@ let ffmpeg = require('fluent-ffmpeg');
 let tempfile = require('tempfile');
 let SpeechToTextV1 = require('watson-developer-cloud/speech-to-text/v1');
 let fs = require('fs');
-let subtitlesParser = require('subtitles-parser');
 
 let accuracyCommand = require('./commands/accuracy');
 const testCommand = require('./commands/test');
 let combiner = require('./combiner');
+const Subtitle = require('./data/Subtitle');
 
 program.version('0.0.1');
 
@@ -49,12 +49,12 @@ program
     if (!subtitleFilepath) return console.error('The subtitle file must be given');
     if (!recognitionFilepath) return console.error('The recognition result file must be given');
 
-    const subtitle = subtitlesParser.fromSrt(fs.readFileSync(subtitleFilepath, 'utf-8'));
+    const subtitle = Subtitle.fromSrt(subtitleFilepath);
     const recognitionResult = JSON.parse(fs.readFileSync(recognitionFilepath, 'utf-8'));
 
     combiner.combine(subtitle, recognitionResult)
       .then((newSubtitle) => {
-        const text = newSubtitle
+        const text = newSubtitle.pieces
           .map((item) => {
             const { id, text, startTime, endTime } = item;
             return `${id}\n${startTime} --> ${endTime}\n${text}\n`
