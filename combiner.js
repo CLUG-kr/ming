@@ -97,14 +97,6 @@ Combiner.combine = (subtitle, recognitionResult) => {
     let candidates = sentences
       .map((sentence, sentenceId) => {
         let sentenceCandidates = findSentenceInRecognition(sentence, recognizedWordPositions);
-        /*
-        if (sentenceId + 1 === 22) {
-          console.log(`findSentenceInRecognition: ${sentence}`);
-          sentenceCandidates.forEach(cand => {
-            console.log(cand.map(pos => `${recognizedWordList[pos].text}(${pos})`).join(" "));
-          });
-        }
-        */
         if (!sentenceCandidates) {
           return [];
         }
@@ -136,29 +128,6 @@ Combiner.combine = (subtitle, recognitionResult) => {
         sentenceCandidate: candidate.data.sentenceCandidate
       }};
     });
-
-  //let expectWordPosition = 0;
-  //let expectOriginalId = 1;
-  //newSubtitle.forEach(item => {
-  //  const { id, text, startTime, endTime, data: { originalId, sentenceCandidate } } = item;
-
-  //
-  //  for (let i = expectOriginalId; i < originalId; i++) {
-  //    console.log(`>>>>> Unmatched PIECE: ${subtitle[i-1].text}`);
-  //  }
-  //  expectOriginalId = originalId + 1;
-  //  for (let pos = expectWordPosition; pos < _.head(sentenceCandidate); pos++) {
-  //    console.log(`>>>>> Unmatched WORD: ${recognizedWordList[pos].text}(${pos})`);
-  //  }
-  //  console.log(``);
-  //  expectWordPosition = _.last(sentenceCandidate) + 1;
-
-  //  console.log(`${id} (${originalId})`);
-  //  console.log(`${startTime} --> ${endTime}`);
-  //  console.log(`${text}`);
-  //  console.log(sentenceCandidate.map(pos => `${recognizedWordList[pos].text}(${pos})`).join(" "));
-  //  console.log(``);
-  //});
 
     // Interpolation
     let expectWordPosition = 0;
