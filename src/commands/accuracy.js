@@ -41,7 +41,7 @@ const accuracyCommand = (outputFilepath, groundTruthFilepath, options) => {
   const output = subtitlesParser.fromSrt(fs.readFileSync(outputFilepath, 'utf-8'));
   const groundTruth = subtitlesParser.fromSrt(fs.readFileSync(groundTruthFilepath, 'utf-8'));
 
-  const accuracies = [];
+  let accuracies = [];
   let from = 0;
   output.forEach((outputItem) => {
     const index = _.findIndex(groundTruth, item => item.text === outputItem.text, from);
@@ -49,10 +49,17 @@ const accuracyCommand = (outputFilepath, groundTruthFilepath, options) => {
     accuracies.push(getJaccardIndex(outputItem, groundTruth[index]));
   });
 
-  const missingCount = groundTruth.length - output.length;
+  // FIXME: not tested
+  if (!options.withoutMissings) {
+    const missingCount = groundTruth.length - output.length;
+    accuracies = _.concat(accuracies, zeros(missingCount));
+  }
 
-  console.log(`Accuracy without missing: ${mean(accuracies)}`);
-  console.log(`Accuracy with missing: ${mean(_.concat(accuracies, zeros(missingCount)))}`);
+  // FIXME: not tested
+  if (options.printAll) {
+    _.concat(accuracies, zeros(missingCount)).forEach((acc, index) => console.log(`${index} ${acc}`));
+  }
+  console.log(`mean ${mean(accuracies)}`);
 };
 
 module.exports = accuracyCommand;
