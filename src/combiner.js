@@ -2,7 +2,7 @@ let _ = require('lodash');
 const levenshtein = require('fast-levenshtein');
 
 const Subtitle = require('./data/Subtitle');
-const { convertSecondsToFormat, normalizeString, getRecognizedWordList } = require('./utils');
+const { convertSecondsToFormat, normalizeString } = require('./utils');
 
 let Combiner = {};
 
@@ -97,7 +97,7 @@ const findLIS = (candidates) => {
 
 Combiner.combine = (subtitle, recognitionResult) => {
   return new Promise((resolve, reject) => {
-    const recognizedWordList = getRecognizedWordList(recognitionResult);
+    const recognizedWordList = recognitionResult.words();
     const recognizedWordPositions = getRecognizedWordPositions(recognizedWordList);
 
     let candidates = subtitle.pieces

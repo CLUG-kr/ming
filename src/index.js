@@ -8,6 +8,7 @@ let accuracyCommand = require('./commands/accuracy');
 const testCommand = require('./commands/test');
 let combiner = require('./combiner');
 const Subtitle = require('./data/Subtitle');
+const RecognitionResult = require('./data/RecognitionResult');
 
 program.version('0.0.1');
 
@@ -50,7 +51,7 @@ program
     if (!recognitionFilepath) return console.error('The recognition result file must be given');
 
     const subtitle = Subtitle.fromSrt(subtitleFilepath);
-    const recognitionResult = JSON.parse(fs.readFileSync(recognitionFilepath, 'utf-8'));
+    const recognitionResult = RecognitionResult.fromJSON(recognitionFilepath);
 
     combiner.combine(subtitle, recognitionResult)
       .then((newSubtitle) => {
