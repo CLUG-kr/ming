@@ -88,14 +88,20 @@ const findLIS = (candidates) => {
   }
   // FIXME: It is possible there are not unique LIS result
   let nextSequenceLength = _.reduce(lisTable, (a, b) => _.max([a, b]));
-  let lastSequenceId = 987654321;
+  let lastPieceId = 987654321;
+  let lastStartTime = 987654321;
   let lis = [];
   for (let i = candidates.length - 1; i >= 0; i--) {
-    if (lisTable[i] === nextSequenceLength && candidates[i].pieceId < lastSequenceId) {
-      nextSequenceLength--;
-      lastSequenceId = candidates[i].pieceId;
-      lis.push(candidates[i]);
-    }
+    if (lisTable[i] !== nextSequenceLength)
+      continue;
+    else if (candidates[i].pieceId >= lastPieceId)
+      continue;
+    else if (candidates[i].endTime > lastStartTime)
+      continue;
+    nextSequenceLength--;
+    lastPieceId = candidates[i].pieceId;
+    lastStartTime = candidates[i].startTime;
+    lis.push(candidates[i]);
   }
   return lis.reverse();
 }
