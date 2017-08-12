@@ -34,6 +34,9 @@ class SubtitlePiece {
         return this._startTime;
     }
 
+    get textLevenshtein() {
+        return this.normalizedWords.join("");
+    }
 }
 
 module.exports = SubtitlePiece;

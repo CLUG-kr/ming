@@ -55,6 +55,9 @@ program
 
     combiner.combine(subtitle, recognitionResult)
       .then((newSubtitle) => {
+        return combiner.interpolateMissingWords(newSubtitle, subtitle, recognitionResult);
+      })
+      .then((newSubtitle) => {
         const text = newSubtitle.pieces
           .map((item) => {
             const { id, text, startTime, endTime } = item;

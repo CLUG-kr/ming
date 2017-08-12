@@ -70,6 +70,7 @@ const dropUnlikelyCandidates = (matchCandidates) => {
 }
 
 const findLIS = (candidates) => {
+  candidates = _.sortBy(candidates, [(candidate) => candidate.endTime]);
   let lisTable = _.times(candidates.length, _.constant(0));
   for (let i = 0; i < candidates.length; i++) {
     const max = candidates
@@ -108,7 +109,7 @@ Combiner.combine = (subtitle, recognitionResult) => {
       positions: recognizedWordPositions
     };
 
-    let candidates = subtitle.pieces
+    let candidates = _.flatten(subtitle.pieces
       .map((piece, pieceId) => {
         let matchCandidates = findPieceInRecognition(matchContext, piece);
         matchCandidates = dropUnlikelyCandidates(matchCandidates);
@@ -122,14 +123,18 @@ Combiner.combine = (subtitle, recognitionResult) => {
             pieceId
           };
         });
-      })
-      .reduce((a, b) => a.concat(b));
+      }));
 
-    candidates = _.sortBy(candidates, [(candidate) => candidate.endTime]);
     const lis = findLIS(candidates);
     const newSubtitle = Subtitle.fromLIS(lis, subtitle);
+    resolve(newSubtitle);
+  });
+};
 
-    // Interpolation
+Combiner.interpolateMissingWords = (newSubtitle, subtitle, recognitionResult) => {
+  return new Promise((resolve, reject) => {
+    const recognizedWordList = recognitionResult.words();
+
     let expectWordPosition = 0;
     let expectOriginalId = 1;
     const interpolations = _.flatten(newSubtitle.pieces.map((item, i) => {
@@ -161,14 +166,14 @@ Combiner.combine = (subtitle, recognitionResult) => {
       for (let prevEnd = 0; prevEnd <= unmatchedWords.length; prevEnd++) {
         for (let currStart = prevEnd; currStart <= unmatchedWords.length; currStart++) {
           const prevDistance = !prevItem ? 0 : levenshtein.get(
-            prevItem.text.split(' ').map(normalizeString).join(""),
+            prevItem.textLevenshtein,
             _.slice(
               recognizedWordList.map(word => word.text),
               _.head(prevItem.data.matchCandidate.positions),
               _.last(prevItem.data.matchCandidate.positions) + 1 + prevEnd).join("")
           );
           const currDistance = levenshtein.get(
-            currItem.text.split(' ').map(normalizeString).join(""),
+            currItem.textLevenshtein,
             _.slice(
               recognizedWordList.map(word => word.text),
               _.head(currItem.data.matchCandidate.positions) - unmatchedWords.length + currStart,
