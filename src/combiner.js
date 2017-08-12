@@ -85,6 +85,7 @@ const findLIS = (candidates) => {
       .reduce((a, b) => a > b ? a : b, 0);
     lisTable[i] = max + 1;
   }
+  // FIXME: It is possible there are not unique LIS result
   let nextSequenceLength = _.reduce(lisTable, (a, b) => _.max([a, b]));
   let lastSequenceId = 987654321;
   let lis = [];
