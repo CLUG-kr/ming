@@ -1,3 +1,5 @@
+const striptags = require('striptags');
+
 const { convertFormatToSeconds, convertSecondsToFormat, normalizeString } = require('../utils');
 
 class SubtitlePiece {
@@ -19,7 +21,7 @@ class SubtitlePiece {
     }
 
     get words() {
-        return this.text.split(' ');
+        return striptags(this.text).split(' ');
     }
 
     get normalizedWords() {
