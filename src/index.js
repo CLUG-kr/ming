@@ -104,6 +104,7 @@ function extractAudio (videoFilepath, outputFilepath) {
       .output(outputFilepath)
       .noVideo()
       .audioCodec('libvorbis') // ogg
+      .audioChannels(2)
       .audioFrequency(16000) // IBM Watson preferred settings.
       .on('start', () => {
         console.log('Extracting audio started');
