@@ -23,7 +23,7 @@ program
     let outputFilepath = options.outputFile || tempfile('.ogg');
     extractAudio(videoFilepath, outputFilepath)
       .then((audioFilepath) => {
-        console.log('Extracing audio is done:', audioFilepath);
+        console.log(audioFilepath);
       })
       .catch((err) => {
         console.error('Error while extracting audio:', err);
@@ -35,9 +35,11 @@ program
   .description('Convert audio to text using IBM Watson Speech-to-text API')
   .option('-o, --output-file [filepath]', 'Save a dump of recognition result to given path')
   .action((audioFilepath, options) => {
+    console.time('recognize');
     recognize(audioFilepath)
       .then((outputFilepath) => {
         console.log('recognize done:', outputFilepath);
+        console.timeEnd('recognize');
       })
       .catch((err) => {
         console.error('Error while recognizing audio:', err);
@@ -118,12 +120,15 @@ function extractAudio (videoFilepath, outputFilepath) {
       .audioFrequency(16000) // IBM Watson preferred settings.
       .on('start', () => {
         console.log('Extracting audio started');
+        console.time('extractAudio');
       })
       .on('error', (err) => {
         reject(err);
       })
       .on('end', () => {
-        resolve(outputFilepath);
+        console.log('Extracing audio is done');
+        console.timeEnd('extractAudio');
+        resolve(audioFilepath);
       })
       .run();
   });
