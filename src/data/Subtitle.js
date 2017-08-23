@@ -37,6 +37,10 @@ class Subtitle {
     text(index) {
         return this.pieces[index].text;
     }
+
+    piece(index) {
+        return this.pieces[index];
+    }
 }
 
 module.exports = Subtitle;

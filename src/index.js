@@ -6,6 +6,8 @@ let fs = require('fs');
 
 let accuracyCommand = require('./commands/accuracy');
 const testCommand = require('./commands/test');
+const statSubtitleCommand = require('./commands/stat-subtitle');
+const statRecognitionCommand = require('./commands/stat-recognition');
 let combiner = require('./combiner');
 const Subtitle = require('./data/Subtitle');
 const RecognitionResult = require('./data/RecognitionResult');
@@ -81,6 +83,14 @@ program
   .command('accuracy [generated] [ground_truth]')
   .description('Compute accuracy (currently, Jaccard Index)')
   .action(accuracyCommand);
+
+program
+  .command('stat-subtitle [subtitle]')
+  .action(statSubtitleCommand);
+
+program
+  .command('stat-recognition [recognition_result]')
+  .action(statRecognitionCommand);
 
 program
   .command('test [test_id] [...args]')
