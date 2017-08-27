@@ -1,6 +1,7 @@
-const _ = require('lodash');
-const assert = require('assert');
-const fs = require('fs');
+import * as _ from "lodash";
+import * as assert from "assert";
+import * as fs from "fs";
+
 const subtitlesParser = require('subtitles-parser');
 
 const { convertFormatToSeconds } = require('../utils');

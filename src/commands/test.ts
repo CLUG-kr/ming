@@ -1,5 +1,4 @@
-const _ = require('lodash');
-
+import * as _ from "lodash";
 import * as fs from "fs";
 
 import { convertSecondsToFormat } from '../utils';

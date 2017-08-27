@@ -10,11 +10,11 @@ class Match {
         }
 
         get firstWord() {
-                return this.context.words[_.head(this.positions)];
+                return this.context.words[_.head(this.positions) as number];
         }
 
         get lastWord() {
-                return this.context.words[_.last(this.positions)];
+                return this.context.words[_.last(this.positions) as number];
         }
 
         get length() {

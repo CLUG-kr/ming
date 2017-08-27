@@ -37,7 +37,7 @@ const findPieceInRecognition = (matchContext, piece) => {
                                         next: []
                                 }));
                         })
-                ), item => item.positionInRecognition);
+                ), (item: any) => item.positionInRecognition);
 
         items.forEach((item, i, items) => {
                 const remainingWordCountInPiece = (piece.normalizedWords.length - 1 - item.positionInPiece);
@@ -66,7 +66,7 @@ const findPieceInRecognition = (matchContext, piece) => {
 
 const dropUnlikelyCandidates = (matchCandidates) => {
         const maxLength = _.max(matchCandidates.map((candidate) => candidate.positions.length));
-        return _.filter(matchCandidates, (candidate) => candidate.positions.length === maxLength);
+        return _.filter(matchCandidates, (candidate: any) => candidate.positions.length === maxLength);
 }
 
 const findLIS = (candidates) => {
@@ -87,7 +87,7 @@ const findLIS = (candidates) => {
                 lisTable[i] = max + 1;
         }
         // FIXME: It is possible there are not unique LIS result
-        let nextSequenceLength = _.reduce(lisTable, (a, b) => _.max([a, b]));
+        let nextSequenceLength: number = _.reduce(lisTable, (a, b) => _.max([a, b]));
         let lastPieceId = 987654321;
         let lastStartTime = 987654321;
         let lis = [];
@@ -150,15 +150,15 @@ export const interpolateMissingWords = (newSubtitle, subtitle, recognitionResult
                         expectOriginalId = originalId + 1;
 
                         const unmatchedWords = _.slice(recognizedWordList, expectWordPosition, _.head(matchCandidate.positions));
-                        expectWordPosition = _.last(matchCandidate.positions) + 1;
+                        expectWordPosition = (_.last(matchCandidate.positions) as number) + 1;
 
                         if (process.env.NODE_ENV === "DEBUG" && unmatchedPieces.length + unmatchedWords.length > 0) {
                                 console.log(`ID: ${id}`);
                                 if (unmatchedPieces.length > 0) {
-                                        console.log('    PIECE', unmatchedPieces.map(piece => piece.text));
+                                        console.log('    PIECE', unmatchedPieces.map((piece: any) => piece.text));
                                 }
                                 if (unmatchedWords.length > 0) {
-                                        console.log('    WORD', unmatchedWords.map(word => word.text));
+                                        console.log('    WORD', unmatchedWords.map((word: any) => word.text));
                                 }
                         }
 
@@ -176,14 +176,14 @@ export const interpolateMissingWords = (newSubtitle, subtitle, recognitionResult
                                                 _.slice(
                                                         recognizedWordList.map(word => word.text),
                                                         _.head(prevItem.data.matchCandidate.positions),
-                                                        _.last(prevItem.data.matchCandidate.positions) + 1 + prevEnd).join("")
+                                                        (_.last(prevItem.data.matchCandidate.positions) as number) + 1 + prevEnd).join("")
                                         );
                                         const currDistance = levenshtein.get(
                                                 currItem.textLevenshtein,
                                                 _.slice(
                                                         recognizedWordList.map(word => word.text),
-                                                        _.head(currItem.data.matchCandidate.positions) - unmatchedWords.length + currStart,
-                                                        _.last(currItem.data.matchCandidate.positions) + 1).join("")
+                                                        (_.head(currItem.data.matchCandidate.positions) as number) - unmatchedWords.length + currStart,
+                                                        (_.last(currItem.data.matchCandidate.positions) as number) + 1).join("")
                                         );
 
                                         if (minDistance > prevDistance + currDistance) {
@@ -212,13 +212,13 @@ export const interpolateMissingWords = (newSubtitle, subtitle, recognitionResult
                         return ret;
                 }));
 
-                interpolations.forEach(update => {
+                interpolations.forEach((update: any) => {
                         const { id, type, words } = update;
                         if (type === "prev") {
-                                newSubtitle.pieces[id - 1].endTime = convertSecondsToFormat(_.last(words).endTime);
+                                newSubtitle.pieces[id - 1].endTime = convertSecondsToFormat((_.last(words) as any).endTime);
                                 newSubtitle.pieces[id - 1].data.matchCandidate.positions = newSubtitle.pieces[id - 1].data.matchCandidate.positions.concat(words.map(word => word.id - 1))
                         } else if (type === "curr") {
-                                newSubtitle.pieces[id - 1].startTime = convertSecondsToFormat(_.head(words).startTime);
+                                newSubtitle.pieces[id - 1].startTime = convertSecondsToFormat((_.head(words) as any).startTime);
                                 newSubtitle.pieces[id - 1].data.matchCandidate.positions = words.map(word => word.id - 1).concat(newSubtitle.pieces[id - 1].data.matchCandidate.positions)
                         }
                 });
