@@ -1,10 +1,11 @@
-let program = require('commander');
-let ffmpeg = require('fluent-ffmpeg');
-let tempfile = require('tempfile');
-let SpeechToTextV1 = require('watson-developer-cloud/speech-to-text/v1');
-let fs = require('fs');
+const program = require('commander');
+const ffmpeg = require('fluent-ffmpeg');
+const tempfile = require('tempfile');
+const SpeechToTextV1 = require('watson-developer-cloud/speech-to-text/v1');
 
-let accuracyCommand = require('./commands/accuracy');
+const fs = require("fs");
+
+const accuracyCommand = "./commands/accuracy";
 const testCommand = require('./commands/test');
 const statSubtitleCommand = require('./commands/stat-subtitle');
 const statRecognitionCommand = require('./commands/stat-recognition');
@@ -128,7 +129,7 @@ function extractAudio (videoFilepath, outputFilepath) {
       .on('end', () => {
         console.log('Extracing audio is done');
         console.timeEnd('extractAudio');
-        resolve(audioFilepath);
+        resolve(outputFilepath);
       })
       .run();
   });

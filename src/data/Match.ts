@@ -1,6 +1,9 @@
-const _ = require("lodash");
+import * as _ from "lodash";
 
 class Match {
+    context: any;
+    positions: any;
+
     constructor(context, positions) {
         this.context = context;
         this.positions = positions.slice();

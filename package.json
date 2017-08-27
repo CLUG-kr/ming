@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/CLUG-kr/ming#readme",
   "dependencies": {
+    "@types/node": "^8.0.25",
     "binary-search-bounds": "^2.0.3",
     "commander": "^2.10.0",
     "fast-levenshtein": "^2.0.6",

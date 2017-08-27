@@ -34,7 +34,7 @@ const getJaccardIndex = (a, b) => {
   return getJaccardIndexInternal(aSeconds, bSeconds);
 };
 
-const accuracyCommand = (outputFilepath, groundTruthFilepath, options) => {
+export const accuracyCommand = (outputFilepath, groundTruthFilepath, options) => {
   if (!outputFilepath) return console.error('The output subtitle file must be given');
   if (!groundTruthFilepath) return console.error('The ground truth subtitle file must be given');
 
@@ -61,5 +61,3 @@ const accuracyCommand = (outputFilepath, groundTruthFilepath, options) => {
   }
   console.log(`mean ${mean(accuracies)}`);
 };
-
-module.exports = accuracyCommand;

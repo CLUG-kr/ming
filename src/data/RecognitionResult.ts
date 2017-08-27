@@ -1,9 +1,12 @@
 const assert = require('assert');
-const fs = require('fs');
+
+import * as fs from "fs";
 
 const { normalizeString } = require('../utils');
 
-class RecognitionResult {
+export class RecognitionResult {
+    data: any;
+
     static fromJSON(jsonFilepath) {
         if (!jsonFilepath) {
             throw new Error("JSON filepath must be given");
@@ -37,5 +40,3 @@ class RecognitionResult {
           });
     }
 }
-
-module.exports = RecognitionResult;

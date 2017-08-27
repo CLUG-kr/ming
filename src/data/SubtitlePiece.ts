@@ -1,8 +1,15 @@
 const striptags = require('striptags');
 
-const { convertFormatToSeconds, convertSecondsToFormat, normalizeString } = require('../utils');
+import { convertFormatToSeconds, convertSecondsToFormat, normalizeString } from "../utils";
 
-class SubtitlePiece {
+export class SubtitlePiece {
+    id: any;
+    _startTime: any;
+    startTime: any;
+    endTime: any;
+    text: any;
+    data: any;
+
     static fromSubtitlesParserItem(item) {
         return new SubtitlePiece(item);
     }
@@ -40,5 +47,3 @@ class SubtitlePiece {
         return this.normalizedWords.join("");
     }
 }
-
-module.exports = SubtitlePiece;

@@ -1,9 +1,13 @@
-const fs = require('fs');
+import * as fs from "fs";
+
+import { SubtitlePiece } from "./SubtitlePiece";
+
 const subtitlesParser = require('subtitles-parser');
 
-const SubtitlePiece = require('./SubtitlePiece');
 
-class Subtitle {
+export class Subtitle {
+    pieces: SubtitlePiece[];
+
     static fromSrt(srtFilepath) {
         if (!srtFilepath) {
             throw new Error("srtFilepath must be given");
@@ -42,5 +46,3 @@ class Subtitle {
         return this.pieces[index];
     }
 }
-
-module.exports = Subtitle;

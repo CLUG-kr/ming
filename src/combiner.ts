@@ -1,4 +1,4 @@
-let _ = require('lodash');
+import * as _ from "lodash";
 const levenshtein = require('fast-levenshtein');
 
 const Match = require('./data/Match');
@@ -29,7 +29,7 @@ const findPieceInRecognition = (matchContext, piece) => {
   let items = _.sortBy(
     _.flatten(piece.normalizedWords
       .map((word, positionInPiece) => {
-        wordPositions = matchContext.positions[word] || [];
+        const wordPositions = matchContext.positions[word] || [];
         return wordPositions.map(positionInRecognition => ({
           positionInPiece,
           positionInRecognition,
@@ -106,7 +106,7 @@ const findLIS = (candidates) => {
   return lis.reverse();
 }
 
-Combiner.combine = (subtitle, recognitionResult) => {
+export const combine = (subtitle, recognitionResult) => {
   return new Promise((resolve, reject) => {
     const recognizedWordList = recognitionResult.words();
     const recognizedWordPositions = getRecognizedWordPositions(recognizedWordList);
@@ -137,7 +137,7 @@ Combiner.combine = (subtitle, recognitionResult) => {
   });
 };
 
-Combiner.interpolateMissingWords = (newSubtitle, subtitle, recognitionResult) => {
+export const interpolateMissingWords = (newSubtitle, subtitle, recognitionResult) => {
   return new Promise((resolve, reject) => {
     const recognizedWordList = recognitionResult.words();
 
@@ -225,5 +225,3 @@ Combiner.interpolateMissingWords = (newSubtitle, subtitle, recognitionResult) =>
     resolve(newSubtitle);
   });
 };
-
-module.exports = Combiner;
