@@ -1,7 +1,8 @@
 import * as fs from "fs";
 
+import { SpeechToTextV1 } from "watson-developer-cloud";
+
 const tempfile = require('tempfile');
-const SpeechToTextV1 = require('watson-developer-cloud/speech-to-text/v1');
 
 export const recognizeCommand = (audioFilepath, options) => {
         console.time('recognize');

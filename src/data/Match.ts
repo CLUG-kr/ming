@@ -1,8 +1,15 @@
 import * as _ from "lodash";
 
+import { RecognitionResultWord } from "./RecognitionResult";
+
+export interface MatchContext {
+        words: RecognitionResultWord[];
+        positions: Map<string, number[]>;
+}
+
 export class Match {
-        context: any;
-        positions: any;
+        context: MatchContext;
+        positions: number[];
 
         constructor(context, positions) {
                 this.context = context;
@@ -10,11 +17,11 @@ export class Match {
         }
 
         get firstWord() {
-                return this.context.words[_.head(this.positions) as number];
+                return this.context.words[_.head(this.positions)];
         }
 
         get lastWord() {
-                return this.context.words[_.last(this.positions) as number];
+                return this.context.words[_.last(this.positions)];
         }
 
         get length() {

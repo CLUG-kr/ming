@@ -19,6 +19,7 @@
   "dependencies": {
     "@types/lodash": "^4.14.74",
     "@types/node": "^8.0.25",
+    "@types/watson-developer-cloud": "^2.31.0",
     "binary-search-bounds": "^2.0.3",
     "commander": "^2.10.0",
     "fast-levenshtein": "^2.0.6",

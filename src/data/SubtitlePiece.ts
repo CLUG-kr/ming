@@ -5,9 +5,9 @@ import { convertFormatToSeconds, convertSecondsToFormat, normalizeString } from 
 export class SubtitlePiece {
         id: any;
         _startTime: any;
-        startTime: any;
-        endTime: any;
-        text: any;
+        startTime: string;
+        endTime: string;
+        text: string;
         data: any;
 
         static fromSubtitlesParserItem(item) {

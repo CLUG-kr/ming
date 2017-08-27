@@ -3,8 +3,33 @@ import * as fs from "fs";
 
 import { normalizeString } from "../utils";
 
+interface TranscriptAlternativeTimestamp {
+        0: string; // word
+        1: number; // start time
+        2: number; // end time
+}
+
+interface TranscriptAlternative {
+        timestamps: TranscriptAlternativeTimestamp[];
+}
+
+interface Transcript {
+        alternatives: TranscriptAlternative[];
+}
+
+interface IBMWatsonSpeechToTextJsonResult {
+        results: Transcript[]
+}
+
+export interface RecognitionResultWord {
+        id: number;
+        text: string;
+        startTime: number;
+        endTime: number;
+}
+
 export class RecognitionResult {
-        data: any;
+        data: IBMWatsonSpeechToTextJsonResult;
 
         static fromJSON(jsonFilepath) {
                 if (!jsonFilepath) {
@@ -18,7 +43,7 @@ export class RecognitionResult {
                 this.data = data;
         }
 
-        words() {
+        words(): RecognitionResultWord[] {
                 return this.data.results
                         .map((transcript) => {
                                 assert(transcript.alternatives.length === 1); // IBM watson default setting. Disable it if needed.

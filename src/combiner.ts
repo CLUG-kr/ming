@@ -1,14 +1,15 @@
 import * as _ from "lodash";
 
+import { Match, MatchContext } from "./data/Match";
+import { RecognitionResult, RecognitionResultWord } from "./data/RecognitionResult";
 import { convertSecondsToFormat, normalizeString } from "./utils";
 
-import { Match } from "./data/Match";
 import { Subtitle } from "./data/Subtitle";
 
 const levenshtein = require('fast-levenshtein');
 
-const getRecognizedWordPositions = (wordList) => {
-        let map = {};
+const getRecognizedWordPositions: (wordList: RecognitionResultWord[]) => Map<string, number[]> = (wordList) => {
+        let map: Map<string, number[]> = {} as Map<string, number[]>;
         wordList.forEach((word, index) => {
                 if (!map[word.text]) map[word.text] = [];
                 map[word.text].push(index);
@@ -25,7 +26,7 @@ const findCandidatesByRecursion = (items, i, context, cb) => {
         context.pop();
 };
 
-const findPieceInRecognition = (matchContext, piece) => {
+const findPieceInRecognition = (matchContext: MatchContext, piece) => {
         let items = _.sortBy(
                 _.flatten(piece.normalizedWords
                         .map((word, positionInPiece) => {
@@ -106,7 +107,7 @@ const findLIS = (candidates) => {
         return lis.reverse();
 }
 
-export const combine = (subtitle, recognitionResult) => {
+export const combine = (subtitle, recognitionResult: RecognitionResult) => {
         return new Promise((resolve, reject) => {
                 const recognizedWordList = recognitionResult.words();
                 const recognizedWordPositions = getRecognizedWordPositions(recognizedWordList);
