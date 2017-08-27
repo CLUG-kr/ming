@@ -5,12 +5,12 @@ import { combine, interpolateMissingWords } from "./combiner";
 import { RecognitionResult } from "./data/RecognitionResult";
 import { Subtitle } from "./data/Subtitle";
 import { accuracyCommand } from "./commands/accuracy";
+import { extractAudioCommand } from "./commands/extract-audio";
 import { statRecognitionCommand } from "./commands/stat-recognition";
 import { statSubtitleCommand } from "./commands/stat-subtitle";
 import { testCommand } from "./commands/test";
 
 const program = require('commander');
-const ffmpeg = require('fluent-ffmpeg');
 const tempfile = require('tempfile');
 const SpeechToTextV1 = require('watson-developer-cloud/speech-to-text/v1');
 
@@ -20,17 +20,7 @@ program
         .command('extract-audio [video]')
         .description('Extract audio from video using ffmpeg')
         .option('-o, --output-file [filepath]', 'Save a audio file to given path')
-        .action((videoFilepath, options) => {
-                if (!videoFilepath) return console.error('The video file is missing');
-                let outputFilepath = options.outputFile || tempfile('.ogg');
-                extractAudio(videoFilepath, outputFilepath)
-                        .then((audioFilepath) => {
-                                console.log(audioFilepath);
-                        })
-                        .catch((err) => {
-                                console.error('Error while extracting audio:', err);
-                        });
-        });
+        .action(extractAudioCommand);
 
 program
         .command('recognize [audio]')
@@ -110,30 +100,6 @@ if (process.argv.slice(2).length) {
         program.parse(process.argv);
 } else {
         program.outputHelp();
-}
-
-function extractAudio(videoFilepath, outputFilepath) {
-        return new Promise((resolve, reject) => {
-                ffmpeg(videoFilepath)
-                        .output(outputFilepath)
-                        .noVideo()
-                        .audioCodec('libvorbis') // ogg
-                        .audioChannels(2)
-                        .audioFrequency(16000) // IBM Watson preferred settings.
-                        .on('start', () => {
-                                console.log('Extracting audio started');
-                                console.time('extractAudio');
-                        })
-                        .on('error', (err) => {
-                                reject(err);
-                        })
-                        .on('end', () => {
-                                console.log('Extracing audio is done');
-                                console.timeEnd('extractAudio');
-                                resolve(outputFilepath);
-                        })
-                        .run();
-        });
 }
 
 function recognize(audioFilepath) {
