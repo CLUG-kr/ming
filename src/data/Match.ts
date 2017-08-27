@@ -11,7 +11,7 @@ export class Match {
         context: MatchContext;
         positions: number[];
 
-        constructor(context, positions) {
+        constructor(context: MatchContext, positions: number[]) {
                 this.context = context;
                 this.positions = positions.slice();
         }

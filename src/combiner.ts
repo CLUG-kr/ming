@@ -27,7 +27,7 @@ const findCandidatesByRecursion = (items, i, context, cb) => {
 };
 
 const findPieceInRecognition = (matchContext: MatchContext, piece) => {
-        let items = _.sortBy(
+        const items = _.sortBy(
                 _.flatten(piece.normalizedWords
                         .map((word, positionInPiece) => {
                                 const wordPositions = matchContext.positions[word] || [];
@@ -107,7 +107,7 @@ const findLIS = (candidates) => {
         return lis.reverse();
 }
 
-export const combine = (subtitle, recognitionResult: RecognitionResult) => {
+export const combine = (subtitle: Subtitle, recognitionResult: RecognitionResult) => {
         return new Promise((resolve, reject) => {
                 const recognizedWordList = recognitionResult.words();
                 const recognizedWordPositions = getRecognizedWordPositions(recognizedWordList);
