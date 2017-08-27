@@ -1,3 +1,4 @@
+import * as _ from "lodash";
 import * as assert from "assert";
 import * as fs from "fs";
 
@@ -28,8 +29,13 @@ export interface RecognitionResultWord {
         endTime: number;
 }
 
+export interface RecognitionResultWordPositionsMap {
+        [word: string]: number[];
+}
+
 export class RecognitionResult {
-        data: IBMWatsonSpeechToTextJsonResult;
+        words: RecognitionResultWord[];
+        wordPositionsMap: RecognitionResultWordPositionsMap;
 
         static fromJSON(jsonFilepath) {
                 if (!jsonFilepath) {
@@ -39,28 +45,31 @@ export class RecognitionResult {
                 return new RecognitionResult(data);
         }
 
-        constructor(data) {
-                this.data = data;
+        constructor(data: IBMWatsonSpeechToTextJsonResult) {
+                this.initializeWordList(data);
+                this.initializeWordPositionsMap(this.words);
         }
 
-        words(): RecognitionResultWord[] {
-                return this.data.results
-                        .map((transcript) => {
-                                assert(transcript.alternatives.length === 1); // IBM watson default setting. Disable it if needed.
-                                return transcript.alternatives[0].timestamps.map((timestamp) => {
-                                        const { 0: text, 1: startTime, 2: endTime } = timestamp;
-                                        return { text, startTime, endTime };
-                                })
-                        })
-                        .reduce((a, b) => a.concat(b))
-                        .filter((word) => !word.text.startsWith('%')) // Remove non-text units like "%HESITATION"
-                        .map((word, index) => {
-                                return {
-                                        id: index + 1,
-                                        text: normalizeString(word.text),
-                                        startTime: word.startTime,
-                                        endTime: word.endTime
-                                };
-                        });
+        private initializeWordList = (data: IBMWatsonSpeechToTextJsonResult) => {
+                // Assume the length of alternatives is 1. It depends on the recognition settings
+                const allTimestamps = _.flatten(_.map(data.results, transcript => transcript.alternatives[0].timestamps));
+                this.words = allTimestamps
+                        .filter(item => !item[0].startsWith("%"))
+                        .map((word, index) => ({
+                                id: index + 1,
+                                text: normalizeString(word[0]),
+                                startTime: word[1],
+                                endTime: word[2]
+                        }));
+        }
+
+        private initializeWordPositionsMap = (words: RecognitionResultWord[]) => {
+                const map = {};
+                words.forEach((word, index) => {
+                        if (!map[word.text])
+                                map[word.text] = [];
+                        map[word.text].push(index);
+                });
+                this.wordPositionsMap = map;
         }
 }

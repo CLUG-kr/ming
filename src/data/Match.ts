@@ -1,10 +1,10 @@
 import * as _ from "lodash";
 
-import { RecognitionResultWord } from "./RecognitionResult";
+import { RecognitionResultWord, RecognitionResultWordPositionsMap } from "./RecognitionResult";
 
 export interface MatchContext {
         words: RecognitionResultWord[];
-        positions: Map<string, number[]>;
+        positions: RecognitionResultWordPositionsMap;
 }
 
 export class Match {

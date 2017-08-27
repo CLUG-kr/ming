@@ -8,15 +8,6 @@ import { Subtitle } from "./data/Subtitle";
 
 const levenshtein = require('fast-levenshtein');
 
-const getRecognizedWordPositions: (wordList: RecognitionResultWord[]) => Map<string, number[]> = (wordList) => {
-        let map: Map<string, number[]> = {} as Map<string, number[]>;
-        wordList.forEach((word, index) => {
-                if (!map[word.text]) map[word.text] = [];
-                map[word.text].push(index);
-        });
-        return map;
-};
-
 const findCandidatesByRecursion = (items, i, context, cb) => {
         context.push(i);
         cb(_.clone(context));
@@ -109,8 +100,8 @@ const findLIS = (candidates) => {
 
 export const combine = (subtitle: Subtitle, recognitionResult: RecognitionResult) => {
         return new Promise((resolve, reject) => {
-                const recognizedWordList = recognitionResult.words();
-                const recognizedWordPositions = getRecognizedWordPositions(recognizedWordList);
+                const recognizedWordList = recognitionResult.words;
+                const recognizedWordPositions = recognitionResult.wordPositionsMap;
                 const matchContext = {
                         words: recognizedWordList,
                         positions: recognizedWordPositions
@@ -140,7 +131,7 @@ export const combine = (subtitle: Subtitle, recognitionResult: RecognitionResult
 
 export const interpolateMissingWords = (newSubtitle, subtitle, recognitionResult) => {
         return new Promise((resolve, reject) => {
-                const recognizedWordList = recognitionResult.words();
+                const recognizedWordList = recognitionResult.words;
 
                 let expectWordPosition = 0;
                 let expectOriginalId = 1;
