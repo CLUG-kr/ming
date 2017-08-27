@@ -14,16 +14,16 @@ import { convertSecondsToFormat } from '../utils';
 }; */
 
 const testCommand = (testId, ...args) => {
-  const rest = args.pop().parent.rawArgs.slice(4);
-  console.log(`test: ${testId}`);
-  console.log(`rest: ${JSON.stringify(rest)}`);
-  switch(testId) {
-    case "1":
-      /* prettyPrintRecognitionResult(...rest); */
-      break;
-    default:
-      console.error(`unknown testId: ${testId}`);
-  }
+        const rest = args.pop().parent.rawArgs.slice(4);
+        console.log(`test: ${testId}`);
+        console.log(`rest: ${JSON.stringify(rest)}`);
+        switch (testId) {
+                case "1":
+                        /* prettyPrintRecognitionResult(...rest); */
+                        break;
+                default:
+                        console.error(`unknown testId: ${testId}`);
+        }
 };
 
 module.exports = testCommand;
