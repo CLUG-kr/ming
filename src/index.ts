@@ -6,13 +6,12 @@ import { RecognitionResult } from "./data/RecognitionResult";
 import { Subtitle } from "./data/Subtitle";
 import { accuracyCommand } from "./commands/accuracy";
 import { extractAudioCommand } from "./commands/extract-audio";
+import { recognizeCommand } from "./commands/recognize";
 import { statRecognitionCommand } from "./commands/stat-recognition";
 import { statSubtitleCommand } from "./commands/stat-subtitle";
 import { testCommand } from "./commands/test";
 
 const program = require('commander');
-const tempfile = require('tempfile');
-const SpeechToTextV1 = require('watson-developer-cloud/speech-to-text/v1');
 
 program.version('0.0.1');
 
@@ -26,17 +25,7 @@ program
         .command('recognize [audio]')
         .description('Convert audio to text using IBM Watson Speech-to-text API')
         .option('-o, --output-file [filepath]', 'Save a dump of recognition result to given path')
-        .action((audioFilepath, options) => {
-                console.time('recognize');
-                recognize(audioFilepath)
-                        .then((outputFilepath) => {
-                                console.log('recognize done:', outputFilepath);
-                                console.timeEnd('recognize');
-                        })
-                        .catch((err) => {
-                                console.error('Error while recognizing audio:', err);
-                        });
-        });
+        .action(recognizeCommand);
 
 program
         .command('combine [subtitle] [recognition_result]')
@@ -100,27 +89,4 @@ if (process.argv.slice(2).length) {
         program.parse(process.argv);
 } else {
         program.outputHelp();
-}
-
-function recognize(audioFilepath) {
-        return new Promise((resolve, reject) => {
-                let service = new SpeechToTextV1({
-                        username: process.env.SERVICE_NAME_USERNAME,
-                        password: process.env.SERVICE_NAME_PASSWORD
-                });
-                const params = {
-                        audio: fs.createReadStream(audioFilepath),
-                        content_type: 'audio/ogg; rate=16000',
-                        inactivity_timeout: -1,
-                        timestamps: true
-                };
-                service.recognize(params, (err, res) => {
-                        if (err) return reject(err);
-                        let out = tempfile();
-                        fs.writeFile(out, JSON.stringify(res), (err) => {
-                                if (err) return reject(err);
-                                resolve(out);
-                        });
-                });
-        });
 }
