@@ -2,7 +2,9 @@ import * as _ from "lodash";
 
 import { Match, MatchContext } from "../data/Match";
 
-const findCandidatesByRecursion = (items, i, context, cb) => {
+import { SubtitlePiece } from "../data/SubtitlePiece";
+
+const findCandidatesByRecursion = (items, i: number, context: number[], cb) => {
         context.push(i);
         cb(_.clone(context));
         items[i].next.forEach(j => {
@@ -11,12 +13,12 @@ const findCandidatesByRecursion = (items, i, context, cb) => {
         context.pop();
 };
 
-const dropUnlikelyCandidates = (matchCandidates) => {
-        const maxLength = _.max(matchCandidates.map((candidate) => candidate.positions.length));
-        return _.filter(matchCandidates, (candidate: any) => candidate.positions.length === maxLength);
+function filterLCS (matchCandidates: Match[]): Match[] {
+        const maxLength = _.max(matchCandidates.map(candidate => candidate.positions.length));
+        return _.filter(matchCandidates, candidate => candidate.positions.length === maxLength);
 }
 
-export const findPieceInRecognition = (matchContext: MatchContext, piece) => {
+export function findPieceInRecognition (matchContext: MatchContext, piece: SubtitlePiece) : Match[] {
         const items = _.sortBy(
                 _.flatten(piece.normalizedWords
                         .map((word, positionInPiece) => {
@@ -28,7 +30,7 @@ export const findPieceInRecognition = (matchContext: MatchContext, piece) => {
                                         next: []
                                 }));
                         })
-                ), (item: any) => item.positionInRecognition);
+                ), item => item.positionInRecognition);
 
         items.forEach((item, i, items) => {
                 const remainingWordCountInPiece = (piece.normalizedWords.length - 1 - item.positionInPiece);
@@ -52,6 +54,6 @@ export const findPieceInRecognition = (matchContext: MatchContext, piece) => {
                         candidates.push(foundMatch);
                 });
         }
-        const ret = dropUnlikelyCandidates(candidates);
+        const ret = filterLCS(candidates);
         return (_.takeRight(_.sortBy(ret, candidate => candidate.positions.length), 20)) || [];
 };

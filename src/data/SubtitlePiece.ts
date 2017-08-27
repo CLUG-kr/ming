@@ -27,23 +27,23 @@ export class SubtitlePiece {
                 this.data = data;
         }
 
-        get words() {
+        get words(): string[] {
                 return striptags(this.text).split(/\s+/);
         }
 
-        get normalizedWords() {
+        get normalizedWords(): string[] {
                 return this.words.map(normalizeString).filter(word => word.length > 0);
         }
 
-        get startTimeS() {
+        get startTimeS(): number {
                 return convertFormatToSeconds(this._startTime);
         }
 
-        get startTimeF() {
+        get startTimeF(): string {
                 return this._startTime;
         }
 
-        get textLevenshtein() {
+        get textLevenshtein(): string {
                 return this.normalizedWords.join("");
         }
 }
