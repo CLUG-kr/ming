@@ -1,8 +1,7 @@
-const assert = require('assert');
-
+import * as assert from "assert";
 import * as fs from "fs";
 
-const { normalizeString } = require('../utils');
+import { normalizeString } from "../utils";
 
 export class RecognitionResult {
         data: any;

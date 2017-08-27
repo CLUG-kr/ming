@@ -4,7 +4,6 @@ import { SubtitlePiece } from "./SubtitlePiece";
 
 const subtitlesParser = require('subtitles-parser');
 
-
 export class Subtitle {
         pieces: SubtitlePiece[];
 

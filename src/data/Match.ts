@@ -1,6 +1,6 @@
 import * as _ from "lodash";
 
-class Match {
+export class Match {
         context: any;
         positions: any;
 
@@ -21,5 +21,3 @@ class Match {
                 return this.positions.length;
         }
 }
-
-module.exports = Match;

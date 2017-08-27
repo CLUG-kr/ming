@@ -1,17 +1,18 @@
+import * as fs from "fs";
+
+import { combine, interpolateMissingWords } from "./combiner";
+
+import { RecognitionResult } from "./data/RecognitionResult";
+import { Subtitle } from "./data/Subtitle";
+import { accuracyCommand } from "./commands/accuracy";
+import { statRecognitionCommand } from "./commands/stat-recognition";
+import { statSubtitleCommand } from "./commands/stat-subtitle";
+import { testCommand } from "./commands/test";
+
 const program = require('commander');
 const ffmpeg = require('fluent-ffmpeg');
 const tempfile = require('tempfile');
 const SpeechToTextV1 = require('watson-developer-cloud/speech-to-text/v1');
-
-const fs = require("fs");
-
-const accuracyCommand = "./commands/accuracy";
-const testCommand = require('./commands/test');
-const statSubtitleCommand = require('./commands/stat-subtitle');
-const statRecognitionCommand = require('./commands/stat-recognition');
-let combiner = require('./combiner');
-const Subtitle = require('./data/Subtitle');
-const RecognitionResult = require('./data/RecognitionResult');
 
 program.version('0.0.1');
 
@@ -58,11 +59,11 @@ program
                 const subtitle = Subtitle.fromSrt(subtitleFilepath);
                 const recognitionResult = RecognitionResult.fromJSON(recognitionFilepath);
 
-                combiner.combine(subtitle, recognitionResult)
+                combine(subtitle, recognitionResult)
                         .then((newSubtitle) => {
-                                return combiner.interpolateMissingWords(newSubtitle, subtitle, recognitionResult);
+                                return interpolateMissingWords(newSubtitle, subtitle, recognitionResult);
                         })
-                        .then((newSubtitle) => {
+                        .then((newSubtitle: any) => {
                                 const text = newSubtitle.pieces
                                         .map((item) => {
                                                 const { id, text, startTime, endTime } = item;

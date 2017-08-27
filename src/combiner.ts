@@ -1,11 +1,11 @@
 import * as _ from "lodash";
+
+import { convertSecondsToFormat, normalizeString } from "./utils";
+
+import { Match } from "./data/Match";
+import { Subtitle } from "./data/Subtitle";
+
 const levenshtein = require('fast-levenshtein');
-
-const Match = require('./data/Match');
-const Subtitle = require('./data/Subtitle');
-const { convertSecondsToFormat, normalizeString } = require('./utils');
-
-let Combiner = {};
 
 const getRecognizedWordPositions = (wordList) => {
         let map = {};

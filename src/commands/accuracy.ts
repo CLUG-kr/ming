@@ -2,9 +2,9 @@ import * as _ from "lodash";
 import * as assert from "assert";
 import * as fs from "fs";
 
-const subtitlesParser = require('subtitles-parser');
+import { convertFormatToSeconds } from "../utils";
 
-const { convertFormatToSeconds } = require('../utils');
+const subtitlesParser = require('subtitles-parser');
 
 const getJaccardIndexInternal = (a, b) => {
         assert(typeof a.start === 'number');
@@ -45,14 +45,14 @@ export const accuracyCommand = (outputFilepath, groundTruthFilepath, options) =>
         let accuracies = [];
         let from = 0;
         output.forEach((outputItem) => {
-                const index = _.findIndex(groundTruth, item => item.text === outputItem.text, from);
+                const index = _.findIndex(groundTruth, (item: any) => item.text === outputItem.text, from);
                 from = index + 1;
                 accuracies.push(getJaccardIndex(outputItem, groundTruth[index]));
         });
 
+        const missingCount = groundTruth.length - output.length;
         // FIXME: not tested
         if (!options.withoutMissings) {
-                const missingCount = groundTruth.length - output.length;
                 accuracies = _.concat(accuracies, zeros(missingCount));
         }
 

@@ -12,7 +12,7 @@ import { convertSecondsToFormat } from '../utils';
   });
 }; */
 
-const testCommand = (testId, ...args) => {
+export const testCommand = (testId, ...args) => {
         const rest = args.pop().parent.rawArgs.slice(4);
         console.log(`test: ${testId}`);
         console.log(`rest: ${JSON.stringify(rest)}`);
@@ -24,5 +24,3 @@ const testCommand = (testId, ...args) => {
                         console.error(`unknown testId: ${testId}`);
         }
 };
-
-module.exports = testCommand;

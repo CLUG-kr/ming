@@ -1,8 +1,8 @@
 import * as _ from "lodash";
 
-const Subtitle = require("../data/Subtitle");
+import { Subtitle } from "../data/Subtitle";
 
-const statSubtitleCommand = (subtitleFilepath, ...args) => {
+export const statSubtitleCommand = (subtitleFilepath, ...args) => {
         if (!subtitleFilepath) return console.error("The subtitle file must be given");
         const subtitle = Subtitle.fromSrt(subtitleFilepath);
 
@@ -17,5 +17,3 @@ const statSubtitleCommand = (subtitleFilepath, ...args) => {
 
         console.log(count);
 };
-
-module.exports = statSubtitleCommand;
