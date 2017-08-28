@@ -20,7 +20,7 @@ export class SubtitlePiece {
                 if (!endTime) throw new Error();
                 if (!text) throw new Error();
 
-                this.id = id;
+                this.id = typeof id === "string" ? Number.parseInt(id) : id;
                 this.startTime = typeof startTime === 'number' ? convertSecondsToFormat(startTime) : startTime;
                 this.endTime = typeof endTime === 'number' ? convertSecondsToFormat(endTime) : endTime;
                 this.text = text;
