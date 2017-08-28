@@ -1,5 +1,6 @@
 import * as fs from "fs";
 
+import { Match } from "./Match";
 import { SubtitlePiece } from "./SubtitlePiece";
 
 const subtitlesParser = require('subtitles-parser');
@@ -14,18 +15,18 @@ export class Subtitle {
                 const items = subtitlesParser.fromSrt(fs.readFileSync(srtFilepath, 'utf-8'));
                 return new Subtitle(items.map(item => SubtitlePiece.fromSubtitlesParserItem(item)))
         }
-        static fromLIS(list, originalSubtitle) {
+        static fromLIS(list: Match[], originalSubtitle: Subtitle) {
+                // FIXME: create ComputedSubtitle/ComputedSubtitlePiece here
                 return new Subtitle(list.map((item, index) => {
-                        return new SubtitlePiece({
+                        const piece = new SubtitlePiece({
                                 id: index + 1,
                                 startTime: item.startTime,
                                 endTime: item.endTime,
-                                text: originalSubtitle.text(item.pieceId),
-                                data: {
-                                        originalId: item.pieceId + 1,
-                                        matchCandidate: item.data.matchCandidate
-                                }
+                                text: originalSubtitle.text(item.piece.id - 1)
                         });
+                        piece.setMatches(item.piece.matches);
+                        piece.setMatch(item.piece.match);
+                        return piece;
                 }));
         }
 

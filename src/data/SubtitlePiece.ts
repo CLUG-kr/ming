@@ -1,20 +1,26 @@
-const striptags = require('striptags');
-
 import { convertFormatToSeconds, convertSecondsToFormat, normalizeString } from "../utils";
 
+import { Match } from "./Match";
+
+const striptags = require('striptags');
+
 export class SubtitlePiece {
-        id: any;
-        _startTime: any;
+        // id is 1-based.
+        id: number;
+        _startTime: string;
         startTime: string;
         endTime: string;
         text: string;
-        data: any;
+
+        // Computed feature
+        matches?: Match[];
+        match?: Match;
 
         static fromSubtitlesParserItem(item) {
                 return new SubtitlePiece(item);
         }
 
-        constructor({ id, startTime, endTime, text, data }) {
+        constructor({ id, startTime, endTime, text }) {
                 if (!id) throw new Error();
                 if (!startTime) throw new Error();
                 if (!endTime) throw new Error();
@@ -24,7 +30,14 @@ export class SubtitlePiece {
                 this.startTime = typeof startTime === 'number' ? convertSecondsToFormat(startTime) : startTime;
                 this.endTime = typeof endTime === 'number' ? convertSecondsToFormat(endTime) : endTime;
                 this.text = text;
-                this.data = data;
+        }
+
+        setMatch(match: Match) {
+                this.match = match;
+        }
+
+        setMatches(matches: Match[]) {
+                this.matches = matches;
         }
 
         get words(): string[] {

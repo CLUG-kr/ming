@@ -13,7 +13,7 @@ export const combineCommand = (subtitleFilepath, recognitionFilepath, options) =
         const recognitionResult = RecognitionResult.fromJSON(recognitionFilepath);
 
         combine(subtitle, recognitionResult)
-                .then((newSubtitle) => {
+                .then((newSubtitle: Subtitle) => {
                         return interpolateMissingWords(newSubtitle, subtitle, recognitionResult);
                 })
                 .then((newSubtitle: any) => {

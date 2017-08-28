@@ -2,6 +2,8 @@ import * as _ from "lodash";
 
 import { RecognitionResultWord, RecognitionResultWordPositionsMap } from "./RecognitionResult";
 
+import { SubtitlePiece } from "./SubtitlePiece";
+
 export interface MatchContext {
         words: RecognitionResultWord[];
         positions: RecognitionResultWordPositionsMap;
@@ -10,10 +12,20 @@ export interface MatchContext {
 export class Match {
         context: MatchContext;
         positions: number[];
+        piece: SubtitlePiece;
 
-        constructor(context: MatchContext, positions: number[]) {
+        constructor(context: MatchContext, positions: number[], piece: SubtitlePiece) {
                 this.context = context;
                 this.positions = positions.slice();
+                this.piece = piece;
+        }
+
+        get startTime() {
+                return this.firstWord.startTime;
+        }
+
+        get endTime() {
+                return this.lastWord.endTime;
         }
 
         get firstWord() {

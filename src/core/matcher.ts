@@ -50,7 +50,7 @@ export function findPieceInRecognition (matchContext: MatchContext, piece: Subti
         for (let i = 0; i < items.length; i++) {
                 findCandidatesByRecursion(items, i, [], (foundCandidate) => {
                         const positionsInContext = foundCandidate.map(pos => items[pos].positionInRecognition);
-                        const foundMatch = new Match(matchContext, positionsInContext)
+                        const foundMatch = new Match(matchContext, positionsInContext, piece);
                         candidates.push(foundMatch);
                 });
         }
