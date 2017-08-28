@@ -20,11 +20,7 @@ export const combine = (subtitle: Subtitle, recognitionResult: RecognitionResult
                 };
 
                 const candidates = _.flatten(_.map(subtitle.pieces, piece => LCSMatcher(matchContext, piece)));
-
                 const lis = LISSieve(candidates);
-                lis.forEach(match => {
-                        match.piece.setMatch(match);
-                });
                 const newSubtitle = Subtitle.fromLIS(lis, subtitle);
                 resolve(newSubtitle);
         });

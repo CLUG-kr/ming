@@ -27,7 +27,7 @@ export const LISSieve = (candidates: Match[]) => {
         let nextSequenceLength: number = _.reduce(lisTable, (a, b) => _.max([a, b]));
         let lastPieceId = 987654321;
         let lastStartTime = 987654321;
-        let lis = [];
+        let lis: Match[] = [];
         for (let i = candidates.length - 1; i >= 0; i--) {
                 if (lisTable[i] !== nextSequenceLength)
                         continue;
@@ -40,6 +40,8 @@ export const LISSieve = (candidates: Match[]) => {
                 lastStartTime = candidates[i].startTime;
                 lis.push(candidates[i]);
         }
+        // FIXME: setMatch => setSieveHint
+        lis.forEach(match => match.piece.setMatch(match));
         return lis.reverse();
 }
 
