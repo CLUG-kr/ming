@@ -6,7 +6,7 @@ import { SubtitlePiece } from "../data/SubtitlePiece";
 
 // Matcher finds the inferenced position of a piece(= Match) in MatchContext(=
 // RecognitionResult currently)
-interface Matcher {
+export interface Matcher {
         (matchContext: MatchContext, piece: SubtitlePiece): Match[];
 }
 

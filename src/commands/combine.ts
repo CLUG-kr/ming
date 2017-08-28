@@ -1,9 +1,11 @@
+import * as _ from "lodash";
 import * as fs from "fs";
 
-import { combine, interpolateMissingWords } from "../combiner";
-
+import { LCSMatcher } from "../core/matcher";
+import { LISSieve } from "../core/sieve";
 import { RecognitionResult } from "../data/RecognitionResult";
 import { Subtitle } from "../data/Subtitle";
+import { interpolateMissingWords } from "../combiner";
 
 export const combineCommand = (subtitleFilepath, recognitionFilepath, options) => {
         if (!subtitleFilepath) return console.error('The subtitle file must be given');
@@ -12,11 +14,20 @@ export const combineCommand = (subtitleFilepath, recognitionFilepath, options) =
         const subtitle = Subtitle.fromSrt(subtitleFilepath);
         const recognitionResult = RecognitionResult.fromJSON(recognitionFilepath);
 
-        combine(subtitle, recognitionResult)
+        const matcher = LCSMatcher;
+        const sieve = LISSieve;
+
+        const matchContext = {
+                words: recognitionResult.words,
+                positions: recognitionResult.wordPositionsMap
+        };
+
+        const candidates = _.flatten(_.map(subtitle.pieces, piece => matcher(matchContext, piece)));
+        const lis = sieve(candidates);
+        const newSubtitle = Subtitle.fromLIS(lis, subtitle);
+
+        interpolateMissingWords(newSubtitle, subtitle, recognitionResult)
                 .then((newSubtitle: Subtitle) => {
-                        return interpolateMissingWords(newSubtitle, subtitle, recognitionResult);
-                })
-                .then((newSubtitle: any) => {
                         const text = newSubtitle.pieces
                                 .map((item) => {
                                         const { id, text, startTime, endTime } = item;

@@ -2,7 +2,7 @@ import * as _ from "lodash";
 
 import { Match } from "../data/Match";
 
-interface Sieve {
+export interface Sieve {
         (matches: Match[]): Match[];
 }
 

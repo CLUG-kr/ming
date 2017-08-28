@@ -1,30 +1,11 @@
 import * as _ from "lodash";
 
-import { Match, MatchContext } from "./data/Match";
-import { RecognitionResult, RecognitionResultWord } from "./data/RecognitionResult";
 import { convertSecondsToFormat, normalizeString } from "./utils";
 
-import { LCSMatcher } from "./core/matcher";
-import { LISSieve } from "./core/sieve";
+import { RecognitionResult } from "./data/RecognitionResult";
 import { Subtitle } from "./data/Subtitle";
 
 const levenshtein = require('fast-levenshtein');
-
-export const combine = (subtitle: Subtitle, recognitionResult: RecognitionResult) => {
-        return new Promise((resolve, reject) => {
-                const recognizedWordList = recognitionResult.words;
-                const recognizedWordPositions = recognitionResult.wordPositionsMap;
-                const matchContext = {
-                        words: recognizedWordList,
-                        positions: recognizedWordPositions
-                };
-
-                const candidates = _.flatten(_.map(subtitle.pieces, piece => LCSMatcher(matchContext, piece)));
-                const lis = LISSieve(candidates);
-                const newSubtitle = Subtitle.fromLIS(lis, subtitle);
-                resolve(newSubtitle);
-        });
-};
 
 export const interpolateMissingWords = (newSubtitle: Subtitle, subtitle: Subtitle, recognitionResult: RecognitionResult) => {
         return new Promise((resolve, reject) => {
