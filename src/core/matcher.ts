@@ -4,6 +4,12 @@ import { Match, MatchContext } from "../data/Match";
 
 import { SubtitlePiece } from "../data/SubtitlePiece";
 
+// Matcher finds the inferenced position of a piece(= Match) in MatchContext(=
+// RecognitionResult currently)
+interface Matcher {
+        (matchContext: MatchContext, piece: SubtitlePiece): Match[];
+}
+
 const findCandidatesByRecursion = (items, i: number, context: number[], cb) => {
         context.push(i);
         cb(_.clone(context));
@@ -18,7 +24,7 @@ function filterLCS (matchCandidates: Match[]): Match[] {
         return _.filter(matchCandidates, candidate => candidate.positions.length === maxLength);
 }
 
-export function findPieceInRecognition (matchContext: MatchContext, piece: SubtitlePiece) : Match[] {
+export const LCSMatcher: Matcher = (matchContext: MatchContext, piece: SubtitlePiece) => {
         const items = _.sortBy(
                 _.flatten(piece.normalizedWords
                         .map((word, positionInPiece) => {
@@ -43,7 +49,7 @@ export function findPieceInRecognition (matchContext: MatchContext, piece: Subti
                                 item.next.push(i);
                         }
                 }
-                if (process.env.NODE_ENV === "DEBUG") console.log(`item=${JSON.stringify(item)} remaining=${remainingWordCountInPiece} until=${offsetBound}`);
+                // console.log(`item=${JSON.stringify(item)} remaining=${remainingWordCountInPiece} until=${offsetBound}`);
         });
 
         const candidates = [];
@@ -55,5 +61,8 @@ export function findPieceInRecognition (matchContext: MatchContext, piece: Subti
                 });
         }
         const ret = filterLCS(candidates);
+        ret.forEach(candidate => {
+                candidate.piece.setMatches(ret);
+        });
         return (_.takeRight(_.sortBy(ret, candidate => candidate.positions.length), 20)) || [];
 };

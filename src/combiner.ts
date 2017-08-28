@@ -4,8 +4,8 @@ import { Match, MatchContext } from "./data/Match";
 import { RecognitionResult, RecognitionResultWord } from "./data/RecognitionResult";
 import { convertSecondsToFormat, normalizeString } from "./utils";
 
+import { LCSMatcher } from "./core/matcher";
 import { Subtitle } from "./data/Subtitle";
-import { findPieceInRecognition } from "./core/matcher";
 
 const levenshtein = require('fast-levenshtein');
 
@@ -55,11 +55,7 @@ export const combine = (subtitle: Subtitle, recognitionResult: RecognitionResult
                         positions: recognizedWordPositions
                 };
 
-                const candidates = _.flatten(_.map(subtitle.pieces, (piece, index) => {
-                        const matchCandidates = findPieceInRecognition(matchContext, piece);
-                        piece.setMatches(matchCandidates);
-                        return matchCandidates;
-                }));
+                const candidates = _.flatten(_.map(subtitle.pieces, piece => LCSMatcher(matchContext, piece)));
 
                 const lis = findLIS(candidates);
                 lis.forEach(match => {
