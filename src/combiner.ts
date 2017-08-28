@@ -84,15 +84,15 @@ export const interpolateMissingWords = (newSubtitle: Subtitle, subtitle: Subtitl
                         expectOriginalId = originalId;
 
                         const unmatchedWords = _.slice(recognizedWordList, expectWordPosition, _.head(match.positions));
-                        expectWordPosition = (_.last(match.positions) as number) + 1;
+                        expectWordPosition = _.last(match.positions) + 1;
 
                         if (process.env.NODE_ENV === "DEBUG" && unmatchedPieces.length + unmatchedWords.length > 0) {
                                 console.log(`ID: ${id}`);
                                 if (unmatchedPieces.length > 0) {
-                                        console.log('    PIECE', unmatchedPieces.map((piece: any) => piece.text));
+                                        console.log('    PIECE', unmatchedPieces.map(piece => piece.text));
                                 }
                                 if (unmatchedWords.length > 0) {
-                                        console.log('    WORD', unmatchedWords.map((word: any) => word.text));
+                                        console.log('    WORD', unmatchedWords.map(word => word.text));
                                 }
                         }
 
