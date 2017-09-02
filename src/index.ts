@@ -28,6 +28,7 @@ program
         .command('combine [subtitle] [recognition_result]')
         .description('Generate fixed subtitle using recognition result and misaligned subtitle')
         .option('-o, --output-file [filepath]', 'Save a new subtitle to given path')
+        .option('-d, --debug-html', 'Save a html file that contains debug infomations')
         .action(combineCommand);
 
 program

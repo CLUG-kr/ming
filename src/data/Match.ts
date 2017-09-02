@@ -39,4 +39,8 @@ export class Match {
         get length() {
                 return this.positions.length;
         }
+
+        get words() {
+                return _.slice(this.context.words, _.head(this.positions), _.last(this.positions) + 1);
+        }
 }
