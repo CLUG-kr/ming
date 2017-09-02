@@ -39,6 +39,7 @@ export const combineCommand = (subtitleFilepath, recognitionFilepath, options) =
                 return piece;
         })
         const computedSubtitle = new ComputedSubtitle(computedPieces, subtitle, recognitionResult);
+        computedSubtitle.localMatch();
         interpolateMissingWords(computedSubtitle, subtitle, recognitionResult)
                 .then((newSubtitle: ComputedSubtitle) => {
                         const { outputFile, debugHtml } = options;

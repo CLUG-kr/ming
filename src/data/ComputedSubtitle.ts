@@ -4,6 +4,7 @@ import * as fs from "fs";
 import { Readable } from "stream";
 import { RecognitionResult } from "./RecognitionResult";
 import { Subtitle } from "./Subtitle";
+import { SubtitlePiece } from "./SubtitlePiece";
 
 const moment = require("moment");
 
@@ -15,6 +16,43 @@ export class ComputedSubtitle extends Subtitle {
                 super(pieces);
                 this.origin = origin;
                 this.recognitionResult = recognitionResult;
+        }
+
+        private findComputedPieceByOriginPieceId(id: number): SubtitlePiece {
+                return _.find(this.pieces, piece => piece.match.piece.id === id);
+        }
+
+        // FIXME: function name ??
+        localMatch() {
+                const unmatchedPieceIds = _.without(
+                        this.origin.pieces.map(piece => piece.id),
+                        ...this.pieces.map(piece => piece.match.piece.id));
+                while (true) {
+                       const took: number[] = _.takeWhile(unmatchedPieceIds, (() => {
+                               let prev: null | number = null;
+                               return (curr) => {
+                                       if (prev === null || prev + 1 === curr) {
+                                               prev = curr;
+                                               return true;
+                                       }
+                                       return false;
+                               };
+                       })());
+                       if (took.length === 0) break;
+                       _.pullAll(unmatchedPieceIds, took);
+
+                       // do somthing here
+                       console.log(took.map(pos => this.origin.pieces[pos - 1].text));
+                       const prevComputed = this.findComputedPieceByOriginPieceId(_.head(took) - 1);
+                       const nextComputed = this.findComputedPieceByOriginPieceId(_.last(took) + 1);
+                       const a = prevComputed ? _.last(prevComputed.match.positions) + 1 : 0;
+                       const b = nextComputed ? _.head(nextComputed.match.positions) : 987654321;
+                       const words = _.slice(this.recognitionResult.words, a, b);
+                       console.log(words.map(word => word.text));
+                       console.log("---------------------------");
+
+                       // Do LCS/LIS with took pieces and words
+                }
         }
 
         dumpDebugHtml() {
