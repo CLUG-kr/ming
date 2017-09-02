@@ -19,7 +19,7 @@ export class Subtitle {
         }
         static fromLIS(list: Match[], originalSubtitle: Subtitle) {
                 // FIXME: create ComputedSubtitle/ComputedSubtitlePiece here
-                return new Subtitle(list.map((item, index) => {
+                const computedPieces = list.map((item, index) => {
                         const piece = new SubtitlePiece({
                                 id: index + 1,
                                 startTime: item.startTime,
@@ -29,7 +29,8 @@ export class Subtitle {
                         piece.setMatches(item.piece.matches);
                         piece.setMatch(item.piece.match);
                         return piece;
-                }));
+                });
+                return new Subtitle(computedPieces);
         }
 
         constructor(pieces) {
