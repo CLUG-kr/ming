@@ -1,10 +1,12 @@
 import * as _ from "lodash";
 import * as fs from "fs";
 
+import { ComputedSubtitle } from "../data/ComputedSubtitle";
 import { LCSMatcher } from "../core/matcher";
 import { LISSieve } from "../core/sieve";
 import { RecognitionResult } from "../data/RecognitionResult";
 import { Subtitle } from "../data/Subtitle";
+import { SubtitlePiece } from "../data/SubtitlePiece";
 import { interpolateMissingWords } from "../combiner";
 
 export const combineCommand = (subtitleFilepath, recognitionFilepath, options) => {
@@ -24,14 +26,31 @@ export const combineCommand = (subtitleFilepath, recognitionFilepath, options) =
 
         const candidates = _.flatten(_.map(subtitle.pieces, piece => matcher(matchContext, piece)));
         const lis = sieve(candidates);
-        const newSubtitle = Subtitle.fromLIS(lis, subtitle);
+        // FIXME:
+        const computedPieces = lis.map((item, index) => {
+                const piece = new SubtitlePiece({
+                        id: index + 1,
+                        startTime: item.startTime,
+                        endTime: item.endTime,
+                        text: subtitle.text(item.piece.id - 1)
+                });
+                piece.setMatches(item.piece.matches);
+                piece.setMatch(item.piece.match);
+                return piece;
+        })
+        const computedSubtitle = new ComputedSubtitle(computedPieces, subtitle);
 
-        interpolateMissingWords(newSubtitle, subtitle, recognitionResult)
-                .then((newSubtitle: Subtitle) => {
-                        const { outputFile } = options;
+        interpolateMissingWords(computedSubtitle, subtitle, recognitionResult)
+                .then((newSubtitle: ComputedSubtitle) => {
+                        const { outputFile, debugHtml } = options;
                         newSubtitle.toSrt().pipe(outputFile
                                 ? fs.createWriteStream(outputFile)
                                 : process.stdout);
+
+                        if (debugHtml) {
+                                // FIXME: Not implemented;
+                                newSubtitle.dumpDebugHtml();
+                        }
                 })
                 .catch((err) => {
                         console.error('Error while combining subtitle and recognition result:', err);
