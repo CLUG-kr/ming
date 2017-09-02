@@ -10,7 +10,7 @@ const subtitlesParser = require('subtitles-parser');
 export class Subtitle {
         pieces: SubtitlePiece[];
 
-        static fromSrt(srtFilepath) {
+        static fromSrt(srtFilepath: string) {
                 if (!srtFilepath) {
                         throw new Error("srtFilepath must be given");
                 }
@@ -18,7 +18,7 @@ export class Subtitle {
                 return new Subtitle(items.map(item => SubtitlePiece.fromSubtitlesParserItem(item)))
         }
 
-        constructor(pieces) {
+        constructor(pieces: SubtitlePiece[]) {
                 this.pieces = pieces;
         }
 
@@ -26,11 +26,11 @@ export class Subtitle {
                 return this.pieces.map(piece => piece.text);
         }
 
-        text(index) {
+        text(index: number) {
                 return this.pieces[index].text;
         }
 
-        piece(index) {
+        piece(index: number) {
                 return this.pieces[index];
         }
 
