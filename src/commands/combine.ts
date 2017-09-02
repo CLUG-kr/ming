@@ -28,19 +28,10 @@ export const combineCommand = (subtitleFilepath, recognitionFilepath, options) =
 
         interpolateMissingWords(newSubtitle, subtitle, recognitionResult)
                 .then((newSubtitle: Subtitle) => {
-                        const text = newSubtitle.pieces
-                                .map((item) => {
-                                        const { id, text, startTime, endTime } = item;
-                                        return `${id}\n${startTime} --> ${endTime}\n${text}\n`
-                                })
-                                .join("\n");
-                        if (options.outputFile) {
-                                fs.writeFileSync(options.outputFile, text);
-                        } else {
-                                if (process.env.NODE_ENV !== "DEBUG") {
-                                        console.log(text);
-                                }
-                        }
+                        const { outputFile } = options;
+                        newSubtitle.toSrt().pipe(outputFile
+                                ? fs.createWriteStream(outputFile)
+                                : process.stdout);
                 })
                 .catch((err) => {
                         console.error('Error while combining subtitle and recognition result:', err);
