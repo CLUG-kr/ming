@@ -7,7 +7,6 @@ const striptags = require('striptags');
 export class SubtitlePiece {
         // id is 1-based.
         id: number;
-        _startTime: string;
         startTime: string;
         endTime: string;
         text: string;
@@ -49,11 +48,15 @@ export class SubtitlePiece {
         }
 
         get startTimeS(): number {
-                return convertFormatToSeconds(this._startTime);
+                return convertFormatToSeconds(this.startTime);
+        }
+
+        get endTimeS(): number {
+                return convertFormatToSeconds(this.endTime);
         }
 
         get startTimeF(): string {
-                return this._startTime;
+                return this.startTime;
         }
 
         get textLevenshtein(): string {
