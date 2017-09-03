@@ -1,6 +1,8 @@
 import * as _ from "lodash";
 import * as fs from "fs";
 
+import { LCSMatcher } from "../core/matcher";
+import { LISSieve } from "../core/sieve";
 import { Readable } from "stream";
 import { RecognitionResult } from "./RecognitionResult";
 import { Subtitle } from "./Subtitle";
@@ -22,40 +24,68 @@ export class ComputedSubtitle extends Subtitle {
                 return _.find(this.pieces, piece => piece.match.piece.id === id);
         }
 
-        // FIXME: function name ??
-        localMatch() {
+        interpolateMissingPieces() {
                 const unmatchedPieceIds = _.without(
                         this.origin.pieces.map(piece => piece.id),
                         ...this.pieces.map(piece => piece.match.piece.id));
                 while (true) {
-                       const took: number[] = _.takeWhile(unmatchedPieceIds, (() => {
-                               let prev: null | number = null;
-                               return (curr) => {
-                                       if (prev === null || prev + 1 === curr) {
-                                               prev = curr;
-                                               return true;
-                                       }
-                                       return false;
-                               };
-                       })());
-                       if (took.length === 0) break;
-                       _.pullAll(unmatchedPieceIds, took);
+                        const took: number[] = _.takeWhile(unmatchedPieceIds, (() => {
+                                let prev: null | number = null;
+                                return (curr) => {
+                                        if (prev === null || prev + 1 === curr) {
+                                                prev = curr;
+                                                return true;
+                                        }
+                                        return false;
+                                };
+                        })());
+                        if (took.length === 0) break;
+                        _.pullAll(unmatchedPieceIds, took);
 
-                       // do somthing here
-                       console.log(took.map(pos => this.origin.pieces[pos - 1].text));
-                       const prevComputed = this.findComputedPieceByOriginPieceId(_.head(took) - 1);
-                       const nextComputed = this.findComputedPieceByOriginPieceId(_.last(took) + 1);
-                       const a = prevComputed ? _.last(prevComputed.match.positions) + 1 : 0;
-                       const b = nextComputed ? _.head(nextComputed.match.positions) : 987654321;
-                       const words = _.slice(this.recognitionResult.words, a, b);
-                       console.log(words.map(word => word.text));
-                       console.log("---------------------------");
+                        // do somthing here
+                        const prevComputed = this.findComputedPieceByOriginPieceId(_.head(took) - 1);
+                        const nextComputed = this.findComputedPieceByOriginPieceId(_.last(took) + 1);
+                        const a = prevComputed ? _.last(prevComputed.match.positions) + 1 : 0;
+                        const b = nextComputed ? _.head(nextComputed.match.positions) : 987654321;
+                        const words = _.slice(this.recognitionResult.words, a, b);
+                        // console.log(words.map(word => word.text));
 
-                       // Do LCS/LIS with took pieces and words
+                        const matchContext = {
+                                words: this.recognitionResult.words,
+                                positions: this.recognitionResult.wordPositionsMap,
+                                positionStart: a,
+                                positionEnd: b
+                        };
+
+                        const candidates = _.flatten(_.map(took, id => LCSMatcher(matchContext, this.origin.pieces[id - 1])));
+                        const replace = LISSieve(candidates).map(match => {
+                                const piece = new SubtitlePiece({
+                                        id: 1,
+                                        startTime: match.startTime,
+                                        endTime: match.endTime,
+                                        text: match.piece.text
+                                });
+                                piece.setMatch(match);
+                                return piece;
+                        });
+
+                        if (replace.length === 0) {
+                                continue;
+                        }
+
+                        const head = _.findIndex(this.pieces, prevComputed);
+                        this.pieces = _.concat(_.takeWhile(this.pieces, piece => piece !== nextComputed), replace, _.takeRightWhile(this.pieces, piece => piece !== prevComputed));
+                        this.pieces.forEach((piece, index) => {
+                                piece.id = index + 1;
+                        });
                 }
         }
 
         dumpDebugHtml() {
+                if (this.pieces.length === 0) {
+                        console.warn("No pieces in the ComputedSubtitle, abort dumpDebugHtml");
+                        return;
+                }
                 const stream = new Readable;
                 const matchedOriginalIds = this.pieces.map(piece => piece.match.piece.id);
                 const matchedPositions = _.flatten(this.pieces.map(piece => piece.match.positions));

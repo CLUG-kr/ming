@@ -12,6 +12,7 @@ import { interpolateMissingWords } from "../combiner";
 export const combineCommand = (subtitleFilepath, recognitionFilepath, options) => {
         if (!subtitleFilepath) return console.error('The subtitle file must be given');
         if (!recognitionFilepath) return console.error('The recognition result file must be given');
+        const { outputFile, debugHtml } = options;
 
         const subtitle = Subtitle.fromSrt(subtitleFilepath);
         const recognitionResult = RecognitionResult.fromJSON(recognitionFilepath);
@@ -39,16 +40,20 @@ export const combineCommand = (subtitleFilepath, recognitionFilepath, options) =
                 return piece;
         })
         const computedSubtitle = new ComputedSubtitle(computedPieces, subtitle, recognitionResult);
-        computedSubtitle.localMatch();
+        if (debugHtml) {
+                computedSubtitle.dumpDebugHtml();
+        }
+        computedSubtitle.interpolateMissingPieces();
+        if (debugHtml) {
+                computedSubtitle.dumpDebugHtml();
+        }
         interpolateMissingWords(computedSubtitle, subtitle, recognitionResult)
                 .then((newSubtitle: ComputedSubtitle) => {
-                        const { outputFile, debugHtml } = options;
                         newSubtitle.toSrt().pipe(outputFile
                                 ? fs.createWriteStream(outputFile)
                                 : process.stdout);
 
                         if (debugHtml) {
-                                // FIXME: Not implemented;
                                 newSubtitle.dumpDebugHtml();
                         }
                 })
