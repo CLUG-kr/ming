@@ -7,7 +7,6 @@ import { LISSieve } from "../core/sieve";
 import { RecognitionResult } from "../data/RecognitionResult";
 import { Subtitle } from "../data/Subtitle";
 import { SubtitlePiece } from "../data/SubtitlePiece";
-import { interpolateMissingWords } from "../combiner";
 
 export const combineCommand = (subtitleFilepath, recognitionFilepath, options) => {
         if (!subtitleFilepath) return console.error('The subtitle file must be given');
@@ -47,17 +46,11 @@ export const combineCommand = (subtitleFilepath, recognitionFilepath, options) =
         if (debugHtml) {
                 computedSubtitle.dumpDebugHtml();
         }
-        interpolateMissingWords(computedSubtitle, subtitle, recognitionResult)
-                .then((newSubtitle: ComputedSubtitle) => {
-                        newSubtitle.toSrt().pipe(outputFile
-                                ? fs.createWriteStream(outputFile)
-                                : process.stdout);
-
-                        if (debugHtml) {
-                                newSubtitle.dumpDebugHtml();
-                        }
-                })
-                .catch((err) => {
-                        console.error('Error while combining subtitle and recognition result:', err);
-                });
+        computedSubtitle.interpolateMissingWords();
+        if (debugHtml) {
+                computedSubtitle.dumpDebugHtml();
+        }
+        computedSubtitle.toSrt().pipe(outputFile
+                ? fs.createWriteStream(outputFile)
+                : process.stdout);
 }
