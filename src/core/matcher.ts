@@ -29,7 +29,11 @@ export const LCSMatcher: Matcher = (matchContext: MatchContext, piece: SubtitleP
                 _.flatten(piece.normalizedWords
                         .map((word, positionInPiece) => {
                                 const wordPositions = matchContext.positions[word] || [];
-                                return wordPositions.map(positionInRecognition => ({
+                                return wordPositions.filter(position => {
+                                        const positionStart = matchContext.positionStart || 0;
+                                        const positionEnd = matchContext.positionEnd || matchContext.words.length;
+                                        return position >= positionStart && position < positionEnd;
+                                }).map(positionInRecognition => ({
                                         positionInPiece,
                                         positionInRecognition,
                                         word,

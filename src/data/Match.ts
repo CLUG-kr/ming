@@ -7,6 +7,8 @@ import { SubtitlePiece } from "./SubtitlePiece";
 export interface MatchContext {
         words: RecognitionResultWord[];
         positions: RecognitionResultWordPositionsMap;
+        positionStart?: number;
+        positionEnd?: number;
 }
 
 export class Match {
