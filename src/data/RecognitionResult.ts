@@ -18,7 +18,7 @@ interface Transcript {
         alternatives: TranscriptAlternative[];
 }
 
-interface IBMWatsonSpeechToTextJsonResult {
+interface IBMBluemixSpeechToTextJsonResult {
         results: Transcript[]
 }
 
@@ -37,7 +37,7 @@ export class RecognitionResult {
         words: RecognitionResultWord[];
         wordPositionsMap: RecognitionResultWordPositionsMap;
 
-        static fromJSON(jsonFilepath) {
+        static fromIbmBluemixJsonResult(jsonFilepath) {
                 if (!jsonFilepath) {
                         throw new Error("JSON filepath must be given");
                 }
@@ -45,12 +45,12 @@ export class RecognitionResult {
                 return new RecognitionResult(data);
         }
 
-        constructor(data: IBMWatsonSpeechToTextJsonResult) {
+        constructor(data: IBMBluemixSpeechToTextJsonResult) {
                 this.initializeWordList(data);
                 this.initializeWordPositionsMap(this.words);
         }
 
-        private initializeWordList = (data: IBMWatsonSpeechToTextJsonResult) => {
+        private initializeWordList = (data: IBMBluemixSpeechToTextJsonResult) => {
                 // Assume the length of alternatives is 1. It depends on the recognition settings
                 const allTimestamps = _.flatten(_.map(data.results, transcript => transcript.alternatives[0].timestamps));
                 this.words = allTimestamps

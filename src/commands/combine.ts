@@ -14,7 +14,7 @@ export const combineCommand = (subtitleFilepath, recognitionFilepath, options) =
         const { outputFile, debugHtml } = options;
 
         const subtitle = Subtitle.fromSrt(subtitleFilepath);
-        const recognitionResult = RecognitionResult.fromJSON(recognitionFilepath);
+        const recognitionResult = RecognitionResult.fromIbmBluemixJsonResult(recognitionFilepath);
 
         const matcher = LCSMatcher;
         const sieve = LISSieve;
