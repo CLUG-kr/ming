@@ -1,13 +1,11 @@
 import * as _ from "lodash";
 
-import { Match, MatchContext } from "../data/Match";
-
+import { ComputedSubtitlePiece } from "../data/ComputedSubtitlePiece";
+import { RecognitionResult } from "../data/RecognitionResult";
 import { SubtitlePiece } from "../data/SubtitlePiece";
 
-// Matcher finds the inferenced position of a piece(= Match) in MatchContext(=
-// RecognitionResult currently)
 export interface Matcher {
-        (matchContext: MatchContext, piece: SubtitlePiece): Match[];
+        (recognitionResult: RecognitionResult, piece: SubtitlePiece, positionRangeBegin?: number, positionRangeEnd?: number): ComputedSubtitlePiece[];
 }
 
 const findCandidatesByRecursion = (items, i: number, context: number[], cb) => {
@@ -19,19 +17,19 @@ const findCandidatesByRecursion = (items, i: number, context: number[], cb) => {
         context.pop();
 };
 
-function filterLCS (matchCandidates: Match[]): Match[] {
+function filterLCS (matchCandidates: ComputedSubtitlePiece[]): ComputedSubtitlePiece[] {
         const maxLength = _.max(matchCandidates.map(candidate => candidate.positions.length));
         return _.filter(matchCandidates, candidate => candidate.positions.length === maxLength);
 }
 
-export const LCSMatcher: Matcher = (matchContext: MatchContext, piece: SubtitlePiece) => {
+export const LCSMatcher: Matcher = (recognitionResult: RecognitionResult, piece: SubtitlePiece, positionRangeBegin?: number, positionRangeEnd?: number) => {
         const items = _.sortBy(
                 _.flatten(piece.normalizedWords
                         .map((word, positionInPiece) => {
-                                const wordPositions = matchContext.positions[word] || [];
+                                const wordPositions = recognitionResult.wordPositionsMap[word] || [];
                                 return wordPositions.filter(position => {
-                                        const positionStart = matchContext.positionStart || 0;
-                                        const positionEnd = matchContext.positionEnd || matchContext.words.length;
+                                        const positionStart = positionRangeBegin || 0;
+                                        const positionEnd = positionRangeEnd || recognitionResult.words.length;
                                         return position >= positionStart && position < positionEnd;
                                 }).map(positionInRecognition => ({
                                         positionInPiece,
@@ -56,12 +54,12 @@ export const LCSMatcher: Matcher = (matchContext: MatchContext, piece: SubtitleP
                 // console.log(`item=${JSON.stringify(item)} remaining=${remainingWordCountInPiece} until=${offsetBound}`);
         });
 
-        const candidates = [];
+        const candidates: ComputedSubtitlePiece[] = [];
         for (let i = 0; i < items.length; i++) {
                 findCandidatesByRecursion(items, i, [], (foundCandidate) => {
                         const positionsInContext = foundCandidate.map(pos => items[pos].positionInRecognition);
-                        const foundMatch = new Match(matchContext, positionsInContext, piece);
-                        candidates.push(foundMatch);
+                        const foundPiece = new ComputedSubtitlePiece(piece, recognitionResult, positionsInContext);
+                        candidates.push(foundPiece);
                 });
         }
         const ret = filterLCS(candidates);

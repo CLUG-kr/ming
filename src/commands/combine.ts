@@ -19,25 +19,10 @@ export const combineCommand = (subtitleFilepath, recognitionFilepath, options) =
         const matcher = LCSMatcher;
         const sieve = LISSieve;
 
-        const matchContext = {
-                words: recognitionResult.words,
-                positions: recognitionResult.wordPositionsMap
-        };
+        const computedSubtitlePieces = _.flatten(_.map(subtitle.pieces, piece => matcher(recognitionResult, piece)));
+        const computedSubtitle = sieve(computedSubtitlePieces);
+        computedSubtitle.setOriginalSubtitle(subtitle);
 
-        const candidates = _.flatten(_.map(subtitle.pieces, piece => matcher(matchContext, piece)));
-        const lis = sieve(candidates);
-        // FIXME:
-        const computedPieces = lis.map((item, index) => {
-                const piece = new SubtitlePiece({
-                        id: index + 1,
-                        startTime: item.startTime,
-                        endTime: item.endTime,
-                        text: subtitle.text(item.piece.id - 1)
-                });
-                piece.setMatch(item.piece.match);
-                return piece;
-        })
-        const computedSubtitle = new ComputedSubtitle(computedPieces, subtitle, recognitionResult);
         if (debugHtml) {
                 computedSubtitle.dumpDebugHtml();
         }

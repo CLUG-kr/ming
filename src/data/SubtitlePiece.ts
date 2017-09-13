@@ -1,7 +1,5 @@
 import { convertFormatToSeconds, convertSecondsToFormat, normalizeString } from "../utils";
 
-import { Match } from "./Match";
-
 const striptags = require('striptags');
 
 export class SubtitlePiece {
@@ -10,9 +8,6 @@ export class SubtitlePiece {
         startTime: string;
         endTime: string;
         text: string;
-
-        // Computed feature
-        match?: Match;
 
         static fromSubtitlesParserItem(item) {
                 return new SubtitlePiece(item);
@@ -27,10 +22,6 @@ export class SubtitlePiece {
                 this.startTime = typeof startTime === 'number' ? convertSecondsToFormat(startTime) : startTime;
                 this.endTime = typeof endTime === 'number' ? convertSecondsToFormat(endTime) : endTime;
                 this.text = text;
-        }
-
-        setMatch(match: Match) {
-                this.match = match;
         }
 
         get words(): string[] {

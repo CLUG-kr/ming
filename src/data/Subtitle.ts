@@ -1,7 +1,6 @@
 import * as _ from "lodash";
 import * as fs from "fs";
 
-import { Match } from "./Match";
 import { Readable } from "stream";
 import { SubtitlePiece } from "./SubtitlePiece";
 
