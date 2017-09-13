@@ -166,7 +166,7 @@ export class ComputedSubtitle extends Subtitle {
 
         }
 
-        dumpDebugHtml() {
+        dumpDebugHtml(id?: string) {
                 if (this.pieces.length === 0) {
                         console.warn("No pieces in the ComputedSubtitle, abort dumpDebugHtml");
                         return;
@@ -221,7 +221,7 @@ export class ComputedSubtitle extends Subtitle {
                 stream.push("</table>");
                 stream.push(`<link rel="stylesheet" type="text/css" href="styles.css">`);
                 stream.push(null);
-                const filepath = `debug/${moment().format()}.html`;
+                const filepath = `debug/${moment().format("YYMMDD_HHmmss_SSS")}${id ? `_${id}` : ""}.html`;
                 stream.pipe(fs.createWriteStream(filepath));
                 console.log(`The debug file dumped: ${filepath}`);
         }

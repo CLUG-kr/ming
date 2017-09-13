@@ -24,15 +24,15 @@ export const combineCommand = (subtitleFilepath, recognitionFilepath, options) =
         computedSubtitle.setOriginalSubtitle(subtitle);
 
         if (debugHtml) {
-                computedSubtitle.dumpDebugHtml();
+                computedSubtitle.dumpDebugHtml("LCS_LIS");
         }
         computedSubtitle.interpolateMissingPieces();
         if (debugHtml) {
-                computedSubtitle.dumpDebugHtml();
+                computedSubtitle.dumpDebugHtml("AFTER_INTERPOLATE_PIECES_LCS_LIS");
         }
         computedSubtitle.interpolateMissingWords();
         if (debugHtml) {
-                computedSubtitle.dumpDebugHtml();
+                computedSubtitle.dumpDebugHtml("AFTER_INTERPOLATE_WORDS_LEVENSHTEIN");
         }
         computedSubtitle.toSrt().pipe(outputFile
                 ? fs.createWriteStream(outputFile)
