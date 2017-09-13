@@ -19,7 +19,6 @@ export class SubtitlePiece {
         }
 
         constructor({ id, startTime, endTime, text }) {
-                if (!id) throw new Error();
                 if (!startTime) throw new Error();
                 if (!endTime) throw new Error();
                 if (!text) throw new Error();
