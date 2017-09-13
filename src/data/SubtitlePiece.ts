@@ -12,7 +12,6 @@ export class SubtitlePiece {
         text: string;
 
         // Computed feature
-        matches?: Match[];
         match?: Match;
 
         static fromSubtitlesParserItem(item) {
@@ -33,10 +32,6 @@ export class SubtitlePiece {
 
         setMatch(match: Match) {
                 this.match = match;
-        }
-
-        setMatches(matches: Match[]) {
-                this.matches = matches;
         }
 
         get words(): string[] {

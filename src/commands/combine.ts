@@ -34,7 +34,6 @@ export const combineCommand = (subtitleFilepath, recognitionFilepath, options) =
                         endTime: item.endTime,
                         text: subtitle.text(item.piece.id - 1)
                 });
-                piece.setMatches(item.piece.matches);
                 piece.setMatch(item.piece.match);
                 return piece;
         })

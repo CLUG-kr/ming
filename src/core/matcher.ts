@@ -65,9 +65,5 @@ export const LCSMatcher: Matcher = (matchContext: MatchContext, piece: SubtitleP
                 });
         }
         const ret = filterLCS(candidates);
-        ret.forEach(candidate => {
-                // FIXME: setMatches => setMatcherHint
-                candidate.piece.setMatches(ret);
-        });
         return (_.takeRight(_.sortBy(ret, candidate => candidate.positions.length), 20)) || [];
 };
