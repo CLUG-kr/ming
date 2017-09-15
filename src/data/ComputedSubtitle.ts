@@ -10,6 +10,7 @@ import { Readable } from "stream";
 import { RecognitionResult } from "./RecognitionResult";
 import { Subtitle } from "./Subtitle";
 import { SubtitlePiece } from "./SubtitlePiece";
+import { getJaccardIndex } from "../commands/accuracy";
 
 const moment = require("moment");
 const levenshtein = require('fast-levenshtein');
@@ -175,47 +176,61 @@ export class ComputedSubtitle extends Subtitle {
                 const matchedOriginalIds = this.computedPieces.map(computedPiece => computedPiece.origin.id);
                 const matchedPositions = _.flatten(this.computedPieces.map(computedPiece => computedPiece.positions));
                 const matchedWordIds = matchedPositions.map(position => this.recognitionResult.words[position].id);
+                const accuracies = this.computedPieces.map(piece => piece.getJaccardIndex());
+
+                const renderTableRow = (columns: string[], isHeader: boolean = false) => {
+                        const tds = columns.map(str => {
+                                return `<${isHeader ? "th" : "td"}>${str}</${isHeader ? "th" : "td"}>`;
+                        }).join("");
+                        return `<tr>${tds}</tr>`;
+                };
+                const renderTableHeaderRow = (columns: string[]) => renderTableRow(columns, true);
 
                 stream.push("<table>");
-                stream.push("<thead><tr><th>Script</th><th>Speech Recognition</th></tr></thead>");
+                stream.push("<thead>");
+                stream.push(renderTableHeaderRow(["", "", `Average (exclude the missed): ${(_.sum(accuracies) / this.computedPieces.length).toFixed(2)}`]));
+                stream.push(renderTableHeaderRow(["", "", `Average (include the missed): ${(_.sum(accuracies) / this.origin.pieces.length).toFixed(2)}`]));
+                stream.push(renderTableHeaderRow(["Script", "Speech Recognition", "Jaccard Index"]));
+                stream.push("</thead>");
                 stream.push("<tbody>");
+
 
                 const firstMatchHeadPosition = _.head(this.computedPieces[0].positions);
                 if (firstMatchHeadPosition !== 0) {
                         // FIXME: Duplicated
                         const unmatchedWords = _.slice(this.recognitionResult.words, 0, firstMatchHeadPosition);
-                        stream.push("<tr><td></td><td>");
-                        stream.push(`<div class="unmatched-words"> ${unmatchedWords.map(word => word.text).join(" ")}</div>`);
-                        stream.push("</td></tr>");
+                        const recognitionColumn = `<span class="unmatched-words"> ${unmatchedWords.map(word => word.text).join(" ")}</span>`;
+                        stream.push(renderTableRow(["", recognitionColumn, ""]));
                 }
 
                 this.origin.pieces.forEach(originPiece => {
-                        stream.push("<tr>");
                         const computedIndex = _.indexOf(matchedOriginalIds, originPiece.id);
-                        const computedPiece = computedIndex > -1 ? this.computedPieces[computedIndex] : null;
-                        stream.push(`<td class="piece ${computedPiece ? "matched" : "missed"}">${originPiece.text}</td>`);
-                        stream.push("<td>");
-                        if (computedPiece) {
-                                const words = computedPiece.wordsInPositions();
-                                words.forEach(word => {
-                                        const isWordMatched = _.indexOf(matchedWordIds, word.id) !== -1;
-                                        stream.push(`<span class="word ${isWordMatched ? "matched" : "missed"}">${word.text} </span>`)
-                                });
-                                const nextComputedPiece = this.computedPieces[computedIndex + 1];
+                        const computedPiece = this.computedPieces[computedIndex];
 
+                        const scriptColumn = `<span class="piece ${computedPiece ? "matched" : "missed"}">${originPiece.text}</span>`;
+                        if (!computedPiece) {
+                                stream.push(renderTableRow([scriptColumn, "", "0 (missed)"]));
+                        } else {
+                                const recognitionColumn = computedPiece.wordsInPositions().map(word => {
+                                        const isWordMatched = _.indexOf(matchedWordIds, word.id) !== -1;
+                                        return `<span class="word ${isWordMatched ? "matched" : "missed"}">${word.text} </span>`;
+                                }).join("");
+                                const jaccardIndexElemDebugString = `${computedPiece.startTime} --> ${computedPiece.endTime} (Computed)\\n${computedPiece.origin.startTime} --> ${computedPiece.origin.endTime} (Truth)`;
+                                const jaccardIndexElemInnerText = computedPiece.getJaccardIndex().toFixed(3);
+                                const jaccardIndexElem = `<button onclick="alert('${jaccardIndexElemDebugString}')">${jaccardIndexElemInnerText}</button>`
+                                stream.push(renderTableRow([scriptColumn, recognitionColumn, `${jaccardIndexElem}`]));
+
+                                const nextComputedPiece = this.computedPieces[computedIndex + 1];
                                 const a = _.last(computedPiece.positions) + 1;
                                 const b = nextComputedPiece
                                         ? _.head(nextComputedPiece.positions)
                                         : 987654321;
                                 const unmatchedWords = _.slice(this.recognitionResult.words, a, b);
                                 if (unmatchedWords.length > 0) {
-                                        // FIXME:
-                                        stream.push(`</td></tr><tr><td></td><td>`);
-                                        stream.push(`<div class="unmatched-words"> ${unmatchedWords.map(word => word.text).join(" ")}</div>`);
+                                        const unmatchedWordsElem = `<span class="unmatched-words"> ${unmatchedWords.map(word => word.text).join(" ")}</span>`;
+                                        stream.push(renderTableRow(["", unmatchedWordsElem, ""]));
                                 }
                         }
-                        stream.push("</td>");
-                        stream.push("</tr>");
                 });
                 stream.push("</tbody>");
                 stream.push("</table>");
