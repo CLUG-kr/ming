@@ -3,6 +3,7 @@ import * as _ from "lodash";
 import { RecognitionResult } from "./RecognitionResult";
 import { SubtitlePiece } from "./SubtitlePiece";
 import { convertSecondsToFormat } from "../utils";
+import { getJaccardIndex } from "../commands/accuracy";
 
 export class ComputedSubtitlePiece extends SubtitlePiece {
         recognitionResult: RecognitionResult;
@@ -21,5 +22,10 @@ export class ComputedSubtitlePiece extends SubtitlePiece {
 
         wordsInPositions() {
                 return _.slice(this.recognitionResult.words, _.head(this.positions), _.last(this.positions) + 1);
+        }
+
+        getJaccardIndex() {
+                // FIXME: only supported the origin is Subtitle
+                return getJaccardIndex(this, this.origin);
         }
 }

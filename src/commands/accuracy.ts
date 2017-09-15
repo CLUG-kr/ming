@@ -2,6 +2,7 @@ import * as _ from "lodash";
 import * as assert from "assert";
 import * as fs from "fs";
 
+import { SubtitlePiece } from "../data/SubtitlePiece";
 import { convertFormatToSeconds } from "../utils";
 
 const subtitlesParser = require('subtitles-parser');
@@ -23,7 +24,7 @@ const getJaccardIndexInternal = (a, b) => {
 const mean = array => _.round(_.mean(array), 2);
 const zeros = n => _.fill(_.range(n), 0);
 
-const getJaccardIndex = (a, b) => {
+export const getJaccardIndex = (a: SubtitlePiece, b: SubtitlePiece) => {
         const aSeconds = {
                 start: convertFormatToSeconds(a.startTime),
                 end: convertFormatToSeconds(a.endTime),
