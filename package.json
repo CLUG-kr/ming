@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
+    "debug": "ts-node src/index combine resources/subtitle_ground_truth.srt resources/recognition_result.json --debug-html --output-file debug.srt",
     "test": "tsc && node dist/index.js combine resources/subtitle_ground_truth.srt resources/recognition_result.json"
   },
   "repository": {
