@@ -25,7 +25,7 @@ export class SubtitlePiece {
         }
 
         get words(): string[] {
-                return striptags(this.text).split(/\s+/);
+                return striptags(this.text).split(/[\s-]+/);
         }
 
         get normalizedWords(): string[] {

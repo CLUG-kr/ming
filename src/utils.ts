@@ -2,7 +2,7 @@ import * as assert from "assert";
 const moment = require('moment'); require('moment-duration-format');
 
 export const normalizeString = (str) => {
-        return str.toLowerCase().replace(/[^a-z]/g, '');
+        return str.toLowerCase().replace(/([^a-z']|^'|'$)/g, '');
 };
 
 export const convertFormatToSeconds = (formatString) => {
