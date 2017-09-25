@@ -8,7 +8,7 @@ export interface Matcher {
         (recognitionResult: RecognitionResult, piece: SubtitlePiece, positionRangeBegin?: number, positionRangeEnd?: number): ComputedSubtitlePiece[];
 }
 
-const findCandidatesByRecursion = (items, i: number, context: number[], cb) => {
+const findCandidatesByRecursion = (items, i: number, context: number[], cb: (itemPositions: number[]) => void) => {
         context.push(i);
         cb(_.clone(context));
         items[i].next.forEach(j => {
@@ -17,9 +17,9 @@ const findCandidatesByRecursion = (items, i: number, context: number[], cb) => {
         context.pop();
 };
 
-function filterLCS (matchCandidates: ComputedSubtitlePiece[]): ComputedSubtitlePiece[] {
-        const maxLength = _.max(matchCandidates.map(candidate => candidate.positions.length));
-        return _.filter(matchCandidates, candidate => candidate.positions.length === maxLength);
+function filterLCS (candidatePositions: number[][]): number[][] {
+        const maxLength = _.max(candidatePositions.map(positions => positions.length));
+        return _.filter(candidatePositions, positions => positions.length === maxLength);
 }
 
 export const LCSMatcher: Matcher = (recognitionResult: RecognitionResult, piece: SubtitlePiece, positionRangeBegin?: number, positionRangeEnd?: number) => {
@@ -54,14 +54,13 @@ export const LCSMatcher: Matcher = (recognitionResult: RecognitionResult, piece:
                 // console.log(`item=${JSON.stringify(item)} remaining=${remainingWordCountInPiece} until=${offsetBound}`);
         });
 
-        const candidates: ComputedSubtitlePiece[] = [];
+        const candidates: number[][] = [];
         for (let i = 0; i < items.length; i++) {
-                findCandidatesByRecursion(items, i, [], (foundCandidate) => {
-                        const positionsInContext = foundCandidate.map(pos => items[pos].positionInRecognition);
-                        const foundPiece = new ComputedSubtitlePiece(piece, recognitionResult, positionsInContext);
-                        candidates.push(foundPiece);
+                findCandidatesByRecursion(items, i, [], (itemPositions: number[]) => {
+                        const positionsInRecognition = itemPositions.map(pos => items[pos].positionInRecognition);
+                        candidates.push(positionsInRecognition);
                 });
         }
-        const ret = filterLCS(candidates);
+        const ret = filterLCS(candidates).map(positions => new ComputedSubtitlePiece(piece, recognitionResult, positions));
         return (_.takeRight(_.sortBy(ret, candidate => candidate.positions.length), 20)) || [];
 };
