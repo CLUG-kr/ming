@@ -1,6 +1,5 @@
 import * as fs from "fs";
 
-import { accuracyCommand } from "./commands/accuracy";
 import { combineCommand } from "./commands/combine";
 import { extractAudioCommand } from "./commands/extract-audio";
 import { recognizeCommand } from "./commands/recognize";
@@ -30,11 +29,6 @@ program
         .option('-o, --output-file [filepath]', 'Save a new subtitle to given path')
         .option('-d, --debug-html', 'Save a html file that contains debug infomations')
         .action(combineCommand);
-
-program
-        .command('accuracy [generated] [ground_truth]')
-        .description('Compute accuracy (currently, Jaccard Index)')
-        .action(accuracyCommand);
 
 program
         .command('stat-subtitle [subtitle]')

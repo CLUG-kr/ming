@@ -35,31 +35,3 @@ export const getJaccardIndex = (a: SubtitlePiece, b: SubtitlePiece) => {
         }
         return getJaccardIndexInternal(aSeconds, bSeconds);
 };
-
-export const accuracyCommand = (outputFilepath, groundTruthFilepath, options) => {
-        if (!outputFilepath) return console.error('The output subtitle file must be given');
-        if (!groundTruthFilepath) return console.error('The ground truth subtitle file must be given');
-
-        const output = subtitlesParser.fromSrt(fs.readFileSync(outputFilepath, 'utf-8'));
-        const groundTruth = subtitlesParser.fromSrt(fs.readFileSync(groundTruthFilepath, 'utf-8'));
-
-        let accuracies = [];
-        let from = 0;
-        output.forEach((outputItem) => {
-                const index = _.findIndex(groundTruth, (item: any) => item.text === outputItem.text, from);
-                from = index + 1;
-                accuracies.push(getJaccardIndex(outputItem, groundTruth[index]));
-        });
-
-        const missingCount = groundTruth.length - output.length;
-        // FIXME: not tested
-        if (!options.withoutMissings) {
-                accuracies = _.concat(accuracies, zeros(missingCount));
-        }
-
-        // FIXME: not tested
-        if (options.printAll) {
-                _.concat(accuracies, zeros(missingCount)).forEach((acc, index) => console.log(`${index} ${acc}`));
-        }
-        console.log(`mean ${mean(accuracies)}`);
-};
