@@ -16,12 +16,9 @@ export const combineCommand = (subtitleFilepath, recognitionFilepath, options) =
         const subtitle = Subtitle.fromSrt(subtitleFilepath);
         const recognitionResult = RecognitionResult.fromIbmBluemixJsonResult(recognitionFilepath);
 
-        const matcher = LCSMatcher;
-        const sieve = LISSieve;
-
-        const computedSubtitlePieces = _.flatten(_.map(subtitle.pieces, piece => matcher(recognitionResult, piece)));
-        const computedSubtitle = sieve(computedSubtitlePieces);
+        const computedSubtitle = new ComputedSubtitle([], recognitionResult);
         computedSubtitle.setOriginalSubtitle(subtitle);
+        computedSubtitle.interpolateMissingPieces(LCSMatcher, LISSieve);
 
         if (debugHtml) {
                 computedSubtitle.dumpDebugHtml("LCS_LIS");
