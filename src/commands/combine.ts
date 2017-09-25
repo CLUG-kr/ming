@@ -26,7 +26,7 @@ export const combineCommand = (subtitleFilepath, recognitionFilepath, options) =
         if (debugHtml) {
                 computedSubtitle.dumpDebugHtml("LCS_LIS");
         }
-        computedSubtitle.interpolateMissingPieces();
+        computedSubtitle.interpolateMissingPieces(LCSMatcher, LISSieve);
         if (debugHtml) {
                 computedSubtitle.dumpDebugHtml("AFTER_INTERPOLATE_PIECES_LCS_LIS");
         }

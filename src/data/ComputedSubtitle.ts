@@ -6,8 +6,10 @@ import { convertSecondsToFormat, normalizeString } from "../utils";
 import { ComputedSubtitlePiece } from "./ComputedSubtitlePiece";
 import { LCSMatcher } from "../core/matcher";
 import { LISSieve } from "../core/sieve";
+import { Matcher } from './../core/matcher';
 import { Readable } from "stream";
 import { RecognitionResult } from "./RecognitionResult";
+import { Sieve } from './../core/sieve';
 import { Subtitle } from "./Subtitle";
 import { SubtitlePiece } from "./SubtitlePiece";
 import { getJaccardIndex } from "../commands/accuracy";
@@ -38,7 +40,7 @@ export class ComputedSubtitle extends Subtitle {
                 return _.find(this.computedPieces, piece => piece.origin.id === id);
         }
 
-        interpolateMissingPieces() {
+        interpolateMissingPieces(matcher: Matcher, sieve: Sieve) {
                 const unmatchedPieceIds = _.without(
                         this.origin.pieces.map(piece => piece.id),
                         ...this.computedPieces.map(piece => piece.origin.id));
@@ -64,8 +66,8 @@ export class ComputedSubtitle extends Subtitle {
                         const words = _.slice(this.recognitionResult.words, a, b);
                         // console.log(words.map(word => word.text));
 
-                        const candidates = _.flatten(_.map(took, id => LCSMatcher(this.recognitionResult, this.origin.pieces[id - 1], a, b)));
-                        const replace = LISSieve(candidates);
+                        const candidates = _.flatten(_.map(took, id => matcher(this.recognitionResult, this.origin.pieces[id - 1], a, b)));
+                        const replace = sieve(candidates);
 
                         if (replace.pieces.length === 0) {
                                 continue;
