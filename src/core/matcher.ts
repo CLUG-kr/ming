@@ -47,7 +47,7 @@ export const LCSMatcher: Matcher = (recognitionResult: RecognitionResult, piece:
                         i++;
                         const diffPositionInPiece = items[i].positionInPiece - item.positionInPiece;
                         const diffPositionInRecognition = items[i].positionInRecognition - item.positionInRecognition;
-                        if (diffPositionInPiece > 0 && diffPositionInRecognition <= diffPositionInPiece * 2) {
+                        if (diffPositionInRecognition > 0 && diffPositionInPiece > 0 && diffPositionInRecognition <= diffPositionInPiece * 2) {
                                 item.next.push(i);
                         }
                 }
