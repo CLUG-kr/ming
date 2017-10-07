@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "debug": "ts-node src/index combine resources/subtitle_ground_truth.srt resources/recognition_result.json --debug-html --output-file debug.srt",
-    "test": "tsc && node dist/index.js combine resources/subtitle_ground_truth.srt resources/recognition_result.json"
+    "debug": "ts-node src/index combine resources/linus_torvalds/ground_truth.srt resources/linus_torvalds/recognition_result.json --debug-html --output-file debug.srt",
+    "test": "tsc && node dist/index.js combine resources/linus_torvalds/ground_truth.srt resources/linus_torvalds/recognition_result.json"
   },
   "repository": {
     "type": "git",
