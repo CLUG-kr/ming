@@ -2,6 +2,7 @@ import * as fs from "fs";
 
 import { combineCommand } from "./commands/combine";
 import { extractAudioCommand } from "./commands/extract-audio";
+import { jaccardIndexCommand } from "./commands/jaccard-index";
 import { recognizeCommand } from "./commands/recognize";
 import { shiftCommand } from "./commands/shift";
 import { statRecognitionCommand } from "./commands/stat-recognition";
@@ -45,6 +46,12 @@ program
         .option('-i, --input-file [input_filepath]')
         .option('-o, --output-file [output_filepath]')
         .action(shiftCommand);
+
+program
+        .command('jaccard-index')
+        .option('-a --subtitle_a [subtitle]')
+        .option('-b --subtitle_b [subtitle]')
+        .action(jaccardIndexCommand);
 
 program
         .command('test [test_id] [...args]')
