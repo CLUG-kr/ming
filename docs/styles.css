@@ -1,0 +1,12 @@
+.missed {
+    color: red;
+}
+
+.unmatched-words {
+    color: red;
+    border-left: 1px dashed red;
+}
+
+.piece {
+    border-bottom: 1px solid black;
+}
