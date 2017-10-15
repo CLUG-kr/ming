@@ -47,4 +47,9 @@ export class SubtitlePiece {
         get textLevenshtein(): string {
                 return this.normalizedWords.join("");
         }
+
+        shift (seconds: number) {
+                this.startTime = convertSecondsToFormat(this.startTimeS + seconds);
+                this.endTime = convertSecondsToFormat(this.endTimeS + seconds);
+        }
 }

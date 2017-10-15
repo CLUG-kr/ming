@@ -45,4 +45,8 @@ export class Subtitle {
                 readable.push(null);
                 return readable;
         }
+
+        shift(seconds: number) {
+                this.pieces.forEach(piece => piece.shift(seconds));
+        }
 }

@@ -3,6 +3,7 @@ import * as fs from "fs";
 import { combineCommand } from "./commands/combine";
 import { extractAudioCommand } from "./commands/extract-audio";
 import { recognizeCommand } from "./commands/recognize";
+import { shiftCommand } from "./commands/shift";
 import { statRecognitionCommand } from "./commands/stat-recognition";
 import { statSubtitleCommand } from "./commands/stat-subtitle";
 import { testCommand } from "./commands/test";
@@ -37,6 +38,13 @@ program
 program
         .command('stat-recognition [recognition_result]')
         .action(statRecognitionCommand);
+
+program
+        .command('shift')
+        .option('-s, --seconds [seconds]')
+        .option('-i, --input-file [input_filepath]')
+        .option('-o, --output-file [output_filepath]')
+        .action(shiftCommand);
 
 program
         .command('test [test_id] [...args]')
